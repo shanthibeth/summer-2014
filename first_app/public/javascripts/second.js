@@ -1,5 +1,4 @@
-//first.js
-
+//second.js 
 
 $(document).ready(function(){
 
