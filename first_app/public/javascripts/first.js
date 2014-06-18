@@ -1,11 +1,8 @@
 //first.js
 
-var $ = require("jquery")
-var d3 = require("d3");
 
 $(document).ready(function(){
-
-
+	
 document.getElementById("title").className = "hidden"
 
 var sampleSVG = d3.select("#viz")
