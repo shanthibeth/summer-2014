@@ -37,7 +37,7 @@ $(document).ready(function(){
   	chart.append("g")
       	.attr("class", "y axis")
       	.call(yAxis);
-//private linear supply curve
+// marginal private cost curve
 	var mpc = chart.append("line")
 		.style("stroke", "blue")
 		.style("stroke-width", 2)
@@ -45,7 +45,7 @@ $(document).ready(function(){
 		.attr("x2", width)
 		.attr("y1", 300)
 		.attr("y2", 100)
-//social linear supply curve
+//marginal social cost curve
 	var msc = chart.append("line")
 		.style("stroke", "steelblue")
 		.style("stroke-width", 2)
