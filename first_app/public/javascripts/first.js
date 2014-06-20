@@ -3,6 +3,7 @@
 
 $(document).ready(function(){
 
+
 	var margin = {top: 20, right: 30, bottom: 30, left: 40},
     	width = 500 - margin.left - margin.right,
    		height = 400 - margin.top - margin.bottom;
@@ -23,6 +24,11 @@ $(document).ready(function(){
 		.ticks(0)
 		.orient("left")
 
+/*	var exText = svg.append("text")
+		.attr("x", 300)
+		.attr("y", 200)
+		.text("hello")*/
+
 	var chart = d3.select(".chart")
 		.append("svg")
 		.attr("width", width + margin.left + margin.right)
@@ -38,23 +44,82 @@ $(document).ready(function(){
       	.attr("class", "y axis")
       	.call(yAxis);
 //private linear supply curve
-	var mpc = chart.append("line")
+	var supply = chart.append("line")
 		.style("stroke", "blue")
 		.style("stroke-width", 2)
 		.attr("x1", 0)
 		.attr("x2", width)
 		.attr("y1", 300)
 		.attr("y2", 100)
-//social linear supply curve
-	var msc = chart.append("line")
-		.style("stroke", "steelblue")
+
+
+	var supplyPath = chart.append("path")
+    	.attr("id", "path2")
+    	.attr("d", "M 0,300 L 430,100");
+
+	var supplyText = chart.append("text")
+    	//.attr("x", 8)
+    	.attr("dx", 400)
+    	.attr("dy", -5)
+    	.style("font-size", 12)
+    	.attr("fill","blue")
+  		.append("textPath")
+    		.attr("class", "textpath")
+    		.attr("xlink:href", "#path2")
+    		.text("Supply Curve");
+
+	// var supplyPath = chart.append("path")
+	// 	.attr("d", "M " + width-60 + " " + 290 + " L " + width + " " + 350 + " L " + width-60 + " " + 290)
+
+
+	// var supplyLabel = chart.append("text")
+	// 	.attr("x", width-60)
+	// 	.attr("y", 290)
+	// 	.append(supplyPath)
+	// 		.text("Supply curve")
+
+
+	var mpbPath = chart.append("path")
+    	.attr("id", "path")
+    	.attr("d", "M 0,50 L 430,250");
+
+	var mpbText = chart.append("text")
+    	//.attr("x", 8)
+    	.attr("dx", 385)
+    	.attr("dy", 42)
+    	.style("font-size", 12)
+    	.attr("fill","red")
+  		.append("textPath")
+    		.attr("class", "textpath")
+    		.attr("xlink:href", "#path")
+    		.text("Private Benefit");
+	
+	var msbPath = chart.append("path")
+    	.attr("id", "path")
+    	.attr("d", "M 0,50 L 430,250");
+
+	var msbText = chart.append("text")
+    	//.attr("x", 8)
+    	.attr("dx", 385)
+    	.attr("dy", -5)
+    	.style("font-size", 12)
+    	.attr("fill","orange")
+    	.style("opacity",0.0)
+  		.append("textPath")
+    		.attr("class", "textpath")
+    		.attr("xlink:href", "#path")
+    		.text("Social Benefit");
+
+	var msbF = chart.append("line")
+		.style("stroke", "orange")
 		.style("stroke-width", 2)
 		.attr("x1", 0)
 		.attr("x2", width)
-		.attr("y1", 250)
-		.attr("y2", 50)
-//total linear demand curve
-	var demand = chart.append("line")
+		.attr("y1", 100)
+		.attr("y2", 300)
+
+	//private linear demand
+	var mpb = chart.append("line")
 		.style("stroke", "red")
 		.style("stroke-width", 2)
 		.attr("x1", 0)
@@ -62,30 +127,43 @@ $(document).ready(function(){
 		.attr("y1", 100)
 		.attr("y2", 300)
 
-	var result1 = checkLineIntersection(msc, demand)
+	//social linear demand
+	var msb = chart.append("line")
+		.style("stroke", "orange")
+		.style("stroke-width", 2)
+		.attr("x1", 0)
+		.attr("x2", width)
+		.attr("y1", 50)
+		.attr("y2", 250)
+		.attr("opacity",0)
+
+
+
+	var result1 = checkLineIntersection(supply, msb)
+	var result2 = checkLineIntersection(supply, mpb)
 	console.log(result1)
 	if (result1.onLine1 && result1.onLine2){
 		var Q1 = chart.append("line")
 			.style("stroke", "black")
 			.style("stroke-width", 1)
 			.style("stroke-dasharray", ("3,3"))
-			.attr("x1", result1.x)
-			.attr("x2", result1.x)
-			.attr("y1", result1.y)
+			.attr("x1", result2.x)
+			.attr("x2", result2.x)
+			.attr("y1",  result2.y)
 			.attr("y2", height)
+
 
 		var P1 = chart.append("line")
 			.style("stroke", "black")
 			.style("stroke-width", 1)
 			.style("stroke-dasharray", ("3,3"))
 			.attr("x1", 0)
-			.attr("x2", result1.x)
-			.attr("y1",  result1.y)
-			.attr("y2",  result1.y)
+			.attr("x2", result2.x)
+			.attr("y1", result2.y)
+			.attr("y2", result2.y)
+
 	}
 
-		var result2 = checkLineIntersection(mpc, demand)
-	 	console.log(result2)
 	if (result2.onLine1 && result2.onLine2){
 		var Q2 = chart.append("line")
 			.style("stroke", "black")
@@ -105,29 +183,117 @@ $(document).ready(function(){
 			.attr("y1", result2.y)
 			.attr("y2", result2.y)
 	}
+	var Q1trans = chart.append("line")
+			.attr("opactity", 0)
+			.attr("x1", result1.x)
+			.attr("x2", result1.x)
+			.attr("y1",  result1.y)
+			.attr("y2", height)	
 
-	var dwl = getPoint(msc, result2.x, height)
+	var result3 = checkLineIntersection(mpb, Q1trans)
 
-	var DWLlength = chart.append("line")
-		.style("stroke", "black")
-		.style("stroke-width", 1)
-		.style("stroke-dasharray", ("3,3"))
-		.attr("x1", result2.x)
-		.attr("x2", result2.x)
-		.attr("y1", height - dwl)
-		.attr("y2", result2.y)
+	// var dwl = getPoint(mpb, result2.x, height)
+
+	// var DWLlength = chart.append("line")
+	// 	.style("stroke", "black")
+	// 	.style("stroke-width", 1)
+	// 	.style("stroke-dasharray", ("3,3"))
+	// 	.attr("x1", result2.x)
+	// 	.attr("x2", result2.x)
+	// 	.attr("y1", height - dwl)
+	// 	.attr("y2", result2.y)
 
 	var path = "M " + result1.x + " " + result1.y 
 			+ " L " + result2.x + " " + result2.y +
-			" L " + result2.x + " " + (height - dwl)
+			" L " + result3.x + " " + result3.y
 			+ " L " + result1.x + " " + result1.y
-	console.log(path)
+
+	var path0 ="M " + result2.x + " " + result2.y 
+			+ " L " + result2.x + " " + result2.y +
+			" L " + + result2.x + " " + result2.y
+			+ " L " + result2.x + " " + result2.y
+
+	var path1 = "M " + result1.x + " " + result1.y 
+			+ " L " + result1.x + " " + result1.y +
+			" L " + result1.x + " " + result1.y
+			+ " L " + result1.x + " " + result1.y
+
 	var DWL = chart.append("path")
-		.attr("d",path)
+		.attr("d",path0)
         .style(".stroke-width", 2)
         .style("stroke", "none")
         .style("fill", "purple")
         .style("opacity", ".5");
+
+
+    var next = d3.select("#next")
+    	.on("click", function(){
+    		//add externality
+			msbF
+				.transition()
+				 .attr("y1", 50)
+				 .attr("y2", 250)
+				 .duration(2000)
+
+			msbText
+				.transition()
+				.style("opacity",1)
+				.duration(2000)
+
+			DWL
+				.transition()
+				.attr("d",path)
+				.duration(2000)
+			Q1
+				.transition()
+				.attr("x1", result1.x)
+				.attr("x2", result1.x)
+				.attr("y1",  result1.y)
+				.attr("y2", height)
+				.duration(2000)	
+			P1
+				.transition()
+				.attr("x1", 0)
+				.attr("x2", result1.x)
+				.attr("y1", result1.y)
+				.attr("y2", result1.y)	
+				.duration(2000)
+
+			next.on("click", function() {
+				//add subsity
+				mpb
+					.transition()
+					.attr("y1", 50)
+					.attr("y2", 250)
+					.duration(2000)
+
+				mpbText
+					.transition()
+					.style("opacity", 0)
+					.duration(2000)
+				DWL
+					.transition()
+					.attr("d",path1)
+					.duration(2000)
+				Q2
+					.transition()
+					.attr("x1", result1.x)
+					.attr("x2", result1.x)
+					.attr("y1",  result1.y)
+					.attr("y2", height)	
+					.duration(2000)
+				P2
+					.transition()
+					.attr("x1", 0)
+					.attr("x2", result1.x)
+					.attr("y1", result1.y)
+					.attr("y2", result1.y)	
+					.duration(2000)
+			})
+
+    	})
+
+
 /*var sampleSVG = d3.select("#viz")
         .append("svg")
         .attr("width", 300)
