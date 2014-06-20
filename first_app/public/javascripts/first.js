@@ -43,6 +43,36 @@ $(document).ready(function(){
   	chart.append("g")
       	.attr("class", "y axis")
       	.call(yAxis);
+
+
+    d3.select("#description")
+  		.html("Before Externality is Added")
+  	chart.append("g")
+      	.attr("class", "x axis")
+      	.attr("transform", "translate(0," + height + ")")
+      	.call(xAxis);
+    chart.append("text")
+    	.attr("class", "x label")
+   		.attr("text-anchor", "end")
+    	.attr("x", width)
+    	.attr("y", height + margin.top)
+    	.text("Quantity")
+    chart.append("text")
+    	.attr("class", "y label")
+    	.attr("text-anchor", "end")
+    	.attr("y", -10)
+    	.attr("x", 0)
+    	.attr("transform", "rotate(-90)")
+    	.text("Price")
+    chart.append("text")
+    	.attr("id", "title")
+    	.attr("text-anchor", "end")
+    	.attr("x", (width + margin.left + margin.right)/2 + 80)
+    	.attr("y", 10)
+    	.text("Positive Externality Animation")
+  	chart.append("g")
+      	.attr("class", "y axis")
+      	.call(yAxis);
 //private linear supply curve
 	var supply = chart.append("line")
 		.style("stroke", "blue")
@@ -61,7 +91,7 @@ $(document).ready(function(){
     	//.attr("x", 8)
     	.attr("dx", 400)
     	.attr("dy", -5)
-    	.style("font-size", 12)
+    	.style("font-size", 10)
     	.attr("fill","blue")
   		.append("textPath")
     		.attr("class", "textpath")
@@ -81,13 +111,13 @@ $(document).ready(function(){
 
 	var mpbPath = chart.append("path")
     	.attr("id", "path")
-    	.attr("d", "M 0,50 L 430,250");
+    	.attr("d", "M 0,100 L 430,300");
 
 	var mpbText = chart.append("text")
     	//.attr("x", 8)
     	.attr("dx", 385)
-    	.attr("dy", 42)
-    	.style("font-size", 12)
+    	.attr("dy", -5)
+    	.style("font-size", 10)
     	.attr("fill","red")
   		.append("textPath")
     		.attr("class", "textpath")
@@ -95,20 +125,10 @@ $(document).ready(function(){
     		.text("Private Benefit");
 	
 	var msbPath = chart.append("path")
-    	.attr("id", "path")
+    	.attr("id", "path1")
     	.attr("d", "M 0,50 L 430,250");
 
-	var msbText = chart.append("text")
-    	//.attr("x", 8)
-    	.attr("dx", 385)
-    	.attr("dy", -5)
-    	.style("font-size", 12)
-    	.attr("fill","orange")
-    	.style("opacity",0.0)
-  		.append("textPath")
-    		.attr("class", "textpath")
-    		.attr("xlink:href", "#path")
-    		.text("Social Benefit");
+
 
 	var msbF = chart.append("line")
 		.style("stroke", "orange")
@@ -144,23 +164,29 @@ $(document).ready(function(){
 	console.log(result1)
 	if (result1.onLine1 && result1.onLine2){
 		var Q1 = chart.append("line")
-			.style("stroke", "black")
-			.style("stroke-width", 1)
-			.style("stroke-dasharray", ("3,3"))
-			.attr("x1", result2.x)
-			.attr("x2", result2.x)
-			.attr("y1",  result2.y)
-			.attr("y2", height)
+		 .style("stroke", "black")
+		 	.style("stroke-width", 1)
+		 	//.style("stroke-dasharray", ("3,3"))
+		 	.attr("x1", result2.x)
+		 	.attr("x2", result2.x)
+		 	.attr("y1",  result2.y)
+		 	.attr("y2", result2.y)
+		 	.transition()
+		 	.attr("y2",height)
+		 	.duration(1000)
 
 
 		var P1 = chart.append("line")
 			.style("stroke", "black")
 			.style("stroke-width", 1)
-			.style("stroke-dasharray", ("3,3"))
-			.attr("x1", 0)
+			//.style("stroke-dasharray", ("3,3"))
+			.attr("x1", result2.x)
 			.attr("x2", result2.x)
 			.attr("y1", result2.y)
 			.attr("y2", result2.y)
+			.transition()
+		 	.attr("x1",0)
+		 	.duration(1000)
 
 	}
 
@@ -173,6 +199,7 @@ $(document).ready(function(){
 			.attr("x2", result2.x)
 			.attr("y1",  result2.y)
 			.attr("y2", height)
+			.attr("opacity",0)
 
 		var P2 = chart.append("line")
 			.style("stroke", "black")
@@ -182,7 +209,35 @@ $(document).ready(function(){
 			.attr("x2", result2.x)
 			.attr("y1", result2.y)
 			.attr("y2", result2.y)
+			.attr("opacity",0)
 	}
+
+		var q1label = chart.append("text")
+    		.attr({'class':'edgelabel',
+               'id': "q1label",
+               'dx': result2.x - 5,
+               'dy':height + 15,
+               'font-size':10,
+               'fill':'black'})
+    		.transition()
+    			.delay(1000)
+    		.text("Q*")
+    		
+
+    	var p1label = chart.append("text")
+    		.attr({'class':'edgelabel',
+               'id': "p1label",
+               'dx': 0- 20,
+               'dy':result2.y + 5,
+               'font-size':10,
+               'fill':'black'})
+    		.transition()
+    			.delay(1000)
+    		.text("P*")
+    	/*
+
+    		*/
+
 	var Q1trans = chart.append("line")
 			.attr("opactity", 0)
 			.attr("x1", result1.x)
@@ -203,92 +258,213 @@ $(document).ready(function(){
 	// 	.attr("y1", height - dwl)
 	// 	.attr("y2", result2.y)
 
-	var path = "M " + result1.x + " " + result1.y 
+	var dwlpath = "M " + result1.x + " " + result1.y 
 			+ " L " + result2.x + " " + result2.y +
 			" L " + result3.x + " " + result3.y
 			+ " L " + result1.x + " " + result1.y
 
-	var path0 ="M " + result2.x + " " + result2.y 
+	var dwlpath0 ="M " + result2.x + " " + result2.y 
 			+ " L " + result2.x + " " + result2.y +
 			" L " + + result2.x + " " + result2.y
 			+ " L " + result2.x + " " + result2.y
 
-	var path1 = "M " + result1.x + " " + result1.y 
+	var dwlpath1 = "M " + result1.x + " " + result1.y 
 			+ " L " + result1.x + " " + result1.y +
 			" L " + result1.x + " " + result1.y
 			+ " L " + result1.x + " " + result1.y
 
+
+
+   	dwlarea = 0
+	var dwllabel =chart.append("text")
+		.html("Dead Weight Loss= " + dwlarea)
+		.style("fill", "purple")
+		.attr("dx", 90)
+		.attr("dy", 130)
+		.attr({"font-size": 12})
+
 	var DWL = chart.append("path")
-		.attr("d",path0)
+		.attr("d",dwlpath0)
         .style(".stroke-width", 2)
         .style("stroke", "none")
         .style("fill", "purple")
-        .style("opacity", ".5");
+        .style("opacity", ".5")
+        //.transition()
+        //	.duration(3000)
+        //	.attrTween("d", dwltween(dwlpath, 4, dwlarea))
 
 
     var next = d3.select("#next")
     	.on("click", function(){
     		//add externality
+    		d3.select("#description")
+				.html("Adding a Constant Positive Externality")
+
 			msbF
 				.transition()
 				 .attr("y1", 50)
 				 .attr("y2", 250)
-				 .duration(2000)
+				 .duration(3000)
 
-			msbText
-				.transition()
-				.style("opacity",1)
-				.duration(2000)
+			var msbText = chart.append("text")
+		    	//.attr("x", 8)
+		    	.attr("dx", 385)
+		    	.attr("dy", -5)
+		    	.style("font-size", 10)
+		    	.attr("fill","orange")
+		  		.append("textPath")
+		    		.attr("class", "textpath")
+		    		.attr("xlink:href", "#path1")
+		    		.text("Social Benefit");
 
 			DWL
 				.transition()
-				.attr("d",path)
-				.duration(2000)
+				.attr("d",dwlpath)
+				.duration(3000)
 			Q1
 				.transition()
+				.attr("opacity",0)
+
+			P1
+				.transition()
+				.attr("opacity",0)
+
+		q1label
+			.transition()
+			.attr("dx", result1.x-5)
+			.duration(3000)
+
+		p1label
+			.transition()
+			.attr("dy", result1.y+5)
+			.duration(3000)
+
+
+		var Q12 = chart.append("line")
+		 .style("stroke", "black")
+		 	.style("stroke-width", 1)
+		 	//.style("stroke-dasharray", ("3,3"))
+		 	.attr("x1", result2.x)
+		 	.attr("x2", result2.x)
+		 	.attr("y1",  result2.y)
+		 	.attr("y2", height)
+		 	.transition()
 				.attr("x1", result1.x)
 				.attr("x2", result1.x)
 				.attr("y1",  result1.y)
 				.attr("y2", height)
-				.duration(2000)	
-			P1
-				.transition()
+				.duration(3000)	
+
+
+		var P12 = chart.append("line")
+			.style("stroke", "black")
+			.style("stroke-width", 1)
+			//.style("stroke-dasharray", ("3,3"))
+			.attr("x1", 0)
+			.attr("x2", result2.x)
+			.attr("y1", result2.y)
+			.attr("y2", result2.y)
+			.transition()
 				.attr("x1", 0)
 				.attr("x2", result1.x)
 				.attr("y1", result1.y)
 				.attr("y2", result1.y)	
-				.duration(2000)
+				.duration(3000)
+
+		var q2label = chart.append("text")
+    		.attr({'class':'edgelabel',
+               'id': "q2label",
+               'dx': result2.x - 5,
+               'dy':height + 15,
+               'font-size':10,
+               'fill':'black'})
+    		.transition()
+    			.delay(1000)
+    		.text("Qm")
+
+    	var p2label = chart.append("text")
+    		.attr({'class':'edgelabel',
+               'id': "p2label",
+               'dx': 0 - 18,
+               'dy':result2.y + 5,
+               'font-size':10,
+               'fill':'black'})
+    		.transition()
+    			.delay(1000)
+    		.text("Pm")
+
+			Q2
+				.transition()
+				.attr("opacity",1)
+
+			P2
+				.transition()
+				.attr("opacity",1)
+
 
 			next.on("click", function() {
 				//add subsity
+				/*
+				var DWLline = chart.append("line")
+					.style("stroke", "black")
+					.style("stroke-width", 1)
+					.style("stroke-dasharray", ("3,3"))
+					.attr("x1", 0)
+					.attr("x2", result2.x)
+					.attr("y1", result2.y)
+					.attr("y2", result2.y)
+					.transition()
+						.attr("x1", 0)
+						.attr("x2", result1.x)
+						.attr("y1", result1.y)
+						.attr("y2", result1.y)	
+						.duration(3000)
+*/
+				q2label
+					.transition()
+					.attr("opacity",0)
+				p2label
+					.transition()
+					.attr("opacity",0)
 				mpb
 					.transition()
 					.attr("y1", 50)
 					.attr("y2", 250)
-					.duration(2000)
+					.duration(3000)
+
+				mpbPath
+					.transition()
+ 				   	.attr("d", "M 0,68 L 430,268")
+ 				   	.duration(3000)
 
 				mpbText
 					.transition()
-					.style("opacity", 0)
-					.duration(2000)
+					.attr("dx", 385)
+		    		.attr("dy", 5)
+					//.style("opacity", 0)
+					.duration(3000)
 				DWL
 					.transition()
-					.attr("d",path1)
-					.duration(2000)
+					.attr("d",dwlpath1)
+					.duration(3000)
 				Q2
 					.transition()
 					.attr("x1", result1.x)
 					.attr("x2", result1.x)
 					.attr("y1",  result1.y)
 					.attr("y2", height)	
-					.duration(2000)
+					.duration(3000)
 				P2
 					.transition()
 					.attr("x1", 0)
 					.attr("x2", result1.x)
 					.attr("y1", result1.y)
 					.attr("y2", result1.y)	
-					.duration(2000)
+					.duration(3000)
+
+
+    			d3.select("#description")
+    				.html("Adding a Constant Subsity on Production")
 			})
 
     	})
@@ -322,6 +498,9 @@ $(document).ready(function(){
 
 
 }*/
+
+
+
 
 function checkLineIntersection(line1, line2) {
     // if the lines intersect, the result contains the x and y of the intersection (treating the lines as infinite) and booleans for whether line segment 1 or line segment 2 contain the point
@@ -387,5 +566,39 @@ function getPoint(line, xcoord, height){
     	return (xcoord - startX)* b + startY
     }
 }
+
+/*	function dwltween(d1, precision, dwlarea){
+		return function() {
+		var path0 = this,
+			path1 = path0.cloneNode(),
+			n0 = path0.getTotalLength(),
+        	n1 = (path1.setAttribute("d", d1), path1).getTotalLength();
+		 // Uniform sampling of distance based on specified precision.
+    	var distances = [0], i = 0, dt = precision / Math.max(n0, n1);
+    	while ((i += dt) < 1) distances.push(i);
+    	distances.push(1);
+
+    	// Compute point-interpolators at each distance.
+    	var points = distances.map(function(t) {
+      	var p0 = path0.getPointAtLength(t * n0),
+        	p1 = path1.getPointAtLength(t * n1);
+        	/*console.log(p0)
+        	console.log(p1)
+        	console.log(d3.interpolate([p0.x, p0.y], [p1.x, p1.y]))
+     	return d3.interpolate([p0.x, p0.y], [p1.x, p1.y]);
+    });
+
+    	return function(t) {
+    		var w = document.getElementById("dwlpath").getBoundingClientRect().width
+			var h = document.getElementById("dwlpath").getBoundingClientRect().height
+			dwlarea = w*h/2
+			dwllabel.text("Dead Weight Loss = "+ String(dwlarea/1298 * 100).split(".")[0])
+      		return t < 1 ? "M" + points.map(function(p) { return p(t); }).join("L") : d1;
+    };
+	}}	
+
+	*/
+
+
 
 
