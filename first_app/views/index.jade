@@ -3,9 +3,12 @@ extends layout
 block content
   h1(id = "title") Externalities
   p Welcome to the Wonderful World of Externalities
-
+  div(id = "negativebutton")
+    "Negative Externality"
+  div(id = "positivebutton")
+    "Positive Externality"
   div(id = "description")
   div(class = "chart")
-  div(id = "prev" class = "button") <-
-  div(id = "next" class = "button") ->
+  div(id = "prev" class = "button hidden") <-
+  div(id = "next" class = "button hidden") ->
 

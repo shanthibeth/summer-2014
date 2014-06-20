@@ -1,7 +1,7 @@
 //first.js
 
 
-$(document).ready(function(){
+function positive(){
 
 
 	var margin = {top: 20, right: 30, bottom: 30, left: 40},
@@ -310,7 +310,7 @@ $(document).ready(function(){
         .on("mouseover", function(){d3.select(this).style("stroke", "steelblue");})
         .on("mouseout", function(){d3.select(this).style("stroke", "gray");});
 */
-    })
+    }
 
 /*function getIntersecrtion(firstx1, firsty1, firstx2, firsty2, secondx1, secondy1, secondx2, secondy2){
 	a = (firsty1 - firsty2)/ (firstx1 - firstx2)
