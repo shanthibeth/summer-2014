@@ -43,6 +43,7 @@ $(document).ready(function(){
   	chart.append("g")
       	.attr("class", "y axis")
       	.call(yAxis);
+<<<<<<< HEAD
 //private linear supply curve
 	var supply = chart.append("line")
 		.style("stroke", "blue")
@@ -51,6 +52,7 @@ $(document).ready(function(){
 		.attr("x2", width)
 		.attr("y1", 300)
 		.attr("y2", 100)
+<<<<<<< HEAD
 
 
 	var supplyPath = chart.append("path")
