@@ -32,10 +32,12 @@ function negative(){
 		.append("g")
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 			.attr({"id": "chart"})
+	d3.select("#description")
+		.html("In a world without externalities, the price that a producer pays would entirely reflect all the costs that their production process generates. Similarly, the price that a consumer would pay would entirely reflect all the benefits that the consumer receives.But energy production, like many other goods and services, involves externalities.")
   	/*d3.select(".chart").append("div")
   		.attr({"id": "description", "display":"inline-block", "float": "right"})*/
-  	d3.select("#description")
-  		.html("Before Externality is Added")
+  	// d3.select("#description")
+  	// 	.html("Before Externality is Added")
   chart.append("g")
       	.attr("class", "x axis")
       	.attr("transform", "translate(0," + height + ")")
@@ -536,7 +538,7 @@ function negative(){
 	function state0f(){
 		state +=1
 		d3.select("#description")
-			.html("Adding a Constant Negative Externality")
+			.html("In an unregulated free market economy, negative externalities, like pollution, may not be reflected in the costs an energy producer faces. At each level of production, there are additional costs that are not being borne by the producer. We call these the social costs, as opposed to the private costs, of supply, and they are represented graphically by the “higher” supply curve to the left. We can see that if these externalities were internalized, and consumers had to pay the full costs of energy, they would consume less and at a higher price. They are effectively overconsuming energy because they are not paying its true cost. We call this overpayment, and the resulting inefficient overallocation of scarce resources to energy, a “deadweight loss” to society, represented by the triangle.")
 
 		var msc = chart.append("line")
 			.attr({"id":"msc"})
@@ -774,7 +776,7 @@ function negative(){
 function state1f(){
 	    state += 1
     	d3.select("#description")
-    		.html("Adding a Constant Tax on Consumption")
+    		.html("By adding a tax that makes the price reflect the true cost to society (the marginal social cost, in the language of economics), governments can reduce this overconsumption, freeing up resources to be used in other sectors.")
     	var changelabel = d3.select("#changelabel")
     		.text("Decreasing")
 

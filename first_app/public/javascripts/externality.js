@@ -181,6 +181,13 @@ $(document).ready(function(){
     			.delay(1000)
     		.text("P*")
 	}
+	$(".ebutton").hover(function(){
+		$(this).addClass("hover")
+	},function(){
+		$(this).removeClass("hover")
+	})
+	d3.select("#description")
+		.html("In a world without externalities, the price that a producer pays would entirely reflect all the costs that their production process generates. Similarly, the price that a consumer would pay would entirely reflect all the benefits that the consumer receives.But energy production, like many other goods and services, involves externalities.")
 	$("#negativebutton").click(function (){
 	d3.select("#chart").remove()
 	negative()

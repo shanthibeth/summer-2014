@@ -47,7 +47,7 @@ function positive(){
 
 
     d3.select("#description")
-  		.html("Before Externality is Added")
+  		.html("Energy can also involve positive externalities. Some have argued that renewable place-based energy sources, like wind and solar, may generate positive externalities that consumer’s aren’t paying for, like reduced defense budgets because the government doesn’t need to engage in efforts to secure foreign fossil fuel supplies.")
   	chart.append("g")
       	.attr("class", "x axis")
       	.attr("transform", "translate(0," + height + ")")
@@ -380,7 +380,7 @@ function positive(){
 	function stage0f(){
 			stage += 1
 		   	d3.select("#description")
-				.html("Adding a Constant Positive Externality")
+				.html("Here, the marginal social benefit is higher than the private benefit, and as a result, consumers underpurchase the good, again creating a deadweight loss to society represented by the triangle.")
 
 			var changelabel =chart.append("text")
 				.attr({"id":"changelabel"})
@@ -637,7 +637,7 @@ function positive(){
 
 
 		d3.select("#description")
-			.html("Adding a Constant Subsity on Production")
+			.html("By using subsidies so that households realize the full benefit of their consumption, governments can encourage more efficient consumption levels of goods with positive externalities.")
 		var changelabel = d3.select("#changelabel")
 			.html("Decreasing")
 	}
