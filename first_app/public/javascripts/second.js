@@ -6,7 +6,7 @@ function negative(){
     	width = 500 - margin.left - margin.right,
    		height = 400 - margin.top - margin.bottom;
 
-/*   	var x = d3.scale.linear()
+   	var x = d3.scale.linear()
    		.range([-6, width])
 
 	var y = d3.scale.linear()
@@ -22,20 +22,21 @@ function negative(){
 	var yAxis = d3.svg.axis()
 		.scale(y)
 		.ticks(0)
-		.orient("left")*/
-	var chart = d3.select("#chart")
+		.orient("left")
+	var chart = d3.select("#svg")
 		//.attr({"display": "inline-block"}) 
 		/*.append("svg")*/
-		/*.attr({"display": "inline-block"})
+		.attr({"display": "inline-block"})
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")")*/
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+			.attr({"id": "chart"})
   	/*d3.select(".chart").append("div")
   		.attr({"id": "description", "display":"inline-block", "float": "right"})*/
   	d3.select("#description")
   		.html("Before Externality is Added")
-/*  	chart.append("g")
+  chart.append("g")
       	.attr("class", "x axis")
       	.attr("transform", "translate(0," + height + ")")
       	.call(xAxis);
@@ -51,19 +52,19 @@ function negative(){
     	.attr("y", -10)
     	.attr("x", 0)
     	.attr("transform", "rotate(-90)")
-    	.text("Price")*/
+    	.text("Price")
     chart.append("text")
     	.attr("id", "title")
     	.attr("text-anchor", "end")
     	.attr("x", (width + margin.left + margin.right)/2 + 80)
     	.attr("y", 10)
     	.text("Negative Externality Animation")
-/*  	chart.append("g")
+  	chart.append("g")
       	.attr("class", "y axis")
-      	.call(yAxis);*/
+      	.call(yAxis);
 //private linear supply curve
-	var mpc = d3.select("#mpc")
-/*	var mpc = chart.append("line")
+
+	var mpc = chart.append("line")
 		.style("stroke", "blue")
 		.style("stroke-width", 2)
 		.attr("x1", 0)
@@ -84,12 +85,14 @@ function negative(){
                'fill':'blue'})
 	  	.append("textPath")
 			.attr("xlink:href", "#path")
-			.style("pointer-events", "none")*/
-	var mpcpath = d3.select("#path")
+			.style("pointer-events", "none")
+			.text("Marginal Private Cost/Supply");
+
+/*	var mpcpath = d3.select("#path")
 		.attr("d","M " + (width - 130) + " " + (height - getPoint(mpc,width-130, height) -4)
 				+ " L " + (width-1) + " " + (height - getPoint(mpc, width-1 , height) -4))
 	var mpclabelpath = d3.select("#mpclabelpath")
-		.text("Marginal Private Cost/Supply");
+		.text("Marginal Private Cost/Supply");*/
 //social linear supply curve
 /*	var msc = chart.append("line")
 		.style("stroke", "steelblue")
@@ -116,8 +119,7 @@ function negative(){
 			.text("Marginal Social Cost");*/
 
 //total linear demand curve
-	var demand = d3.select("#demand")
-/*	var demand = chart.append("line")
+	var demand = chart.append("line")
 		.style("stroke", "red")
 		.style("stroke-width", 2)
 		.attr("x1", 0)
@@ -139,8 +141,7 @@ function negative(){
 	  	.append("textPath")
 			.attr("xlink:href", "#dpath")
 			.style("pointer-events", "none")
-			.text("Marginal Benefit/Demand");*/
-	var dlabel = d3.select("#dlabel")
+			.text("Marginal Benefit/Demand");
 /*	var result1 = checkLineIntersection(msc, demand)
 	console.log(result1)
 	if (result1.onLine1 && result1.onLine2){
@@ -165,7 +166,7 @@ function negative(){
 
 		var result2 = checkLineIntersection(mpc, demand)
 	 	console.log(result2)
-/*	if (result2.onLine1 && result2.onLine2){
+	if (result2.onLine1 && result2.onLine2){
 
 		var q2d1 = "M " + result2.x + " " + result2.y + " L " + result2.x + " " + height
 		var Q2 = chart.append("path")
@@ -194,10 +195,10 @@ function negative(){
                'fill':'black'})
     		.transition()
     			.delay(1000)
-    		.text("Q*")*/
+    		.text("Q*")
 
-    var Q2 = d3.select("#q2path")
-    var q2label = d3.select("#q2label")
+   /* var Q2 = d3.select("#q2path")
+    var q2label = d3.select("#q2label")*/
 
 /*		var P2 = chart.append("line")
 			.style("stroke", "black")
@@ -207,9 +208,10 @@ function negative(){
 			.attr("x2", result2.x)
 			.attr("y1", result2.y)
 			.attr("y2", result2.y)*/
-	var P2 = d3.select("#P2")
-	var p2label = d3.select("#p2labeloijb fnrj n")
-	/*	var P2 = chart.append("path")
+/*	var P2 = d3.select("#P2")
+	var p2label = d3.select("#p2labeloijb fnrj n")*/
+		var P2 = chart.append("path")
+			.attr("id", "P2")
 			.attr("d", "M " + result2.x + " " + result2.y + " L " + 0 + " " + result2.y)
 			.style("stroke", "black")
 			.style("stroke-width", 1)
@@ -235,7 +237,7 @@ function negative(){
     		.transition()
     			.delay(1000)
     		.text("P*")
-	}*/
+	}
 	dwlarea = 0
 	var dwllabel =chart.append("text")
 		.html("Dead Weight Loss= " + dwlarea)
@@ -249,21 +251,48 @@ function negative(){
 
 	var next = d3.select("#next")
 		.on("click", function(){
+			if (!($(this).hasClass("unclick"))){
+			$(".button").addClass("unclick")
+    			setTimeout(function(){
+    				$(".button").removeClass("unclick")
+    			}, 3000)
 			if (state == 0){
+				setTimeout(function(){
+    				$("#prev").removeClass("unclick")
+    			}, 3000)
 				state0f()
 			}
 			else if (state == 1){
+				setTimeout(function(){
+    				$("#next").addClass("unclick")
+    			}, 3000)
+				
 				state1f()
 			}
+		}
 		})
 	var prev = d3.select("#prev")
 		.on("click", function(){
+			if (!($(this).hasClass("unclick"))){
+			$(".button").addClass("unclick")
+    			setTimeout(function(){
+    				$(".button").removeClass("unclick")
+    			}, 3000)
 			if (state == 1){
+				setTimeout(function(){
+    				$("#prev").addClass("unclick")
+    			}, 3000)
+				
 				state1b()
 			}
 			if (state == 2){
+				setTimeout(function(){
+    				$("#next").removeClass("unclick")
+    			}, 3000)
+				
 				state2b()
 			}
+		}
 		})
 		/*if (state == 0){
 			state0()}*/
@@ -564,18 +593,20 @@ function negative(){
 			.attr("x1", result1.x)
 			.attr("x2", result1.x)
 			.attr("y1", result1.y)
+
 /*	var q2d2 = "M "+ result1.x + " " + result1.y + " L "+ result1.x + " "+ (height + margin.top)
 	Q2.transition()
 		.duration(3000)
 		.attrTween("d", q2tween(q2d2, 4))*/
-	q2label.transition()
-		// .delay(1750)
+	var q2label = d3.select("#q2label")
+		.transition()
+		//.delay(1750)
 		.duration(3000)
 		.attr("dx", result1.x -5)
 
 	var p2label = d3.select("#p2label")
 	p2label.transition()
-		// .delay(1750)
+		//.delay(1750)
 		.duration(3000)
 		.attr("dy", result1.y + 5)
 
@@ -777,9 +808,17 @@ function state1f(){
     		.attr("y2", result1.y)
     		.attr("x2", result1.x)
 
-    	d3.select("#q1label")
-    		.remove()
+    	var q1label = d3.select("#q1label")
+    		.transition()
+    			.duration(3000)
+    			.attr("dx", result1.x)
     	d3.select("#p1label")
+    		.transition()
+    			.duration(3000)
+    			.attr("dy", result1.y)
+    	var q2label = d3.select("#q2label")
+    		.remove()
+    	var p2label = d3.select("#p2label")
     		.remove()
 
     	var ppath2 = "M " + (width - 130) + " " + (height - getPoint(msc,width-130, height) +15)
@@ -829,28 +868,36 @@ function state2b(){
 		.attr("y1", result2.y)
 		.attr("y2", result2.y)
 		.attr("x2", result2.x)
-	var q1label = chart.append("text")
+    var q1label = d3.select("#q1label")
+		.transition()
+			.duration(3000)
+			.attr("dx", result2.x -5)
+	d3.select("#p1label")
+		.transition()
+			.duration(3000)
+			.attr("dy", result2.y+ 5)
+	var q2label = chart.append("text")
 		.attr({'class':'edgelabel',
-           'id': "q1label",
-           'dx': result2.x - 5,
+           'id': "q2label",
+           'dx': result1.x - 5,
            'dy':height + 15,
            'font-size':10,
            'fill':'black'})
 		.transition()
 			.delay(1000)
-		.text("Qm")
+		.text("Q*")
 		
 
-	var p1label = chart.append("text")
+	var p2label = chart.append("text")
 		.attr({'class':'edgelabel',
-           'id': "p1label",
+           'id': "p2label",
            'dx': 0- 20,
-           'dy':result2.y + 5,
+           'dy':result1.y + 5,
            'font-size':10,
            'fill':'black'})
 		.transition()
 			.delay(1000)
-		.text("Pm")
+		.text("P*")
 
 	var ppath2 = "M " + (width - 130) + " " + (height - getPoint(mpc,width-130, height))
 				+ " L " + (width-1) + " " + (height - getPoint(mpc, width-1 , height))

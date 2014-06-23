@@ -27,6 +27,7 @@ $(document).ready(function(){
 	var chart = d3.select(".chart")
 		.attr({"display": "inline-block"}) 
 		.append("svg")
+		.attr("id","svg")
 		.attr({"display": "inline-block"})
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
@@ -104,6 +105,7 @@ $(document).ready(function(){
                'font-size':10,
                'fill':'red'})
 	  	.append("textPath")
+	  		.attr("id", "dpathlabel")
 			.attr("xlink:href", "#dpath")
 			.style("pointer-events", "none")
 			.text("Marginal Benefit/Demand");
@@ -180,9 +182,13 @@ $(document).ready(function(){
     		.text("P*")
 	}
 	$("#negativebutton").click(function (){
+	d3.select("#chart").remove()
 	negative()
+	$("#next").removeClass("unclick")
 })
 	$("#positivebutton").click(function (){
+	$("#next").removeClass("unclick")
+	d3.select("#chart").remove()
 	positive()
 })
 })

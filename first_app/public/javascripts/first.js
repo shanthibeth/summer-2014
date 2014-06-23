@@ -3,7 +3,7 @@
 
 function positive(){
 
-
+	var stage = 0
 	var margin = {top: 20, right: 30, bottom: 30, left: 40},
     	width = 500 - margin.left - margin.right,
    		height = 400 - margin.top - margin.bottom;
@@ -28,13 +28,14 @@ function positive(){
 		.attr("x", 300)
 		.attr("y", 200)
 		.text("hello")*/
-
-	var chart = d3.select(".chart")
-		.append("svg")
+	var chart = d3.select("#svg")
+	// var chart = d3.select(".chart")
+	// 	.append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+			.attr({"id": "chart"})
   	chart.append("g")
       	.attr("class", "x axis")
       	.attr("transform", "translate(0," + height + ")")
@@ -74,6 +75,7 @@ function positive(){
       	.attr("class", "y axis")
       	.call(yAxis);
 //private linear supply curve
+	//var supply = d3.select("#mpc")
 	var supply = chart.append("line")
 		.style("stroke", "blue")
 		.style("stroke-width", 2)
@@ -81,22 +83,21 @@ function positive(){
 		.attr("x2", width)
 		.attr("y1", 300)
 		.attr("y2", 100)
-
-
+	
 	var supplyPath = chart.append("path")
     	.attr("id", "path2")
     	.attr("d", "M 0,300 L 430,100");
 
 	var supplyText = chart.append("text")
     	//.attr("x", 8)
-    	.attr("dx", 400)
+    	.attr("dx", 370)
     	.attr("dy", -5)
     	.style("font-size", 10)
     	.attr("fill","blue")
   		.append("textPath")
     		.attr("class", "textpath")
     		.attr("xlink:href", "#path2")
-    		.text("Supply Curve");
+    		.text("Marginal Cost/Supply");
 
 	// var supplyPath = chart.append("path")
 	// 	.attr("d", "M " + width-60 + " " + 290 + " L " + width + " " + 350 + " L " + width-60 + " " + 290)
@@ -110,24 +111,27 @@ function positive(){
 
 
 	var mpbPath = chart.append("path")
-    	.attr("id", "path")
-    	.attr("d", "M 0,100 L 430,300");
-
+		.attr("id", "mpbpath")
+   		.attr("d", "M 0,100 L 430,300");
+	//var mpbText = d3.select("#dlabel")
 	var mpbText = chart.append("text")
     	//.attr("x", 8)
-    	.attr("dx", 385)
+    	.attr("dx", 360)
     	.attr("dy", -5)
     	.style("font-size", 10)
     	.attr("fill","red")
   		.append("textPath")
     		.attr("class", "textpath")
-    		.attr("xlink:href", "#path")
-    		.text("Private Benefit");
+    		.attr("xlink:href", "#mpbpath")
+    		.text("Marginal Private Benefit");
 	
+	// var mpbTextPath = d3.select("#dpathlabel")
+	// 	.text("Marginal Private Benefit")
+
 	var msbPath = chart.append("path")
     	.attr("id", "path1")
     	.attr("d", "M 0,50 L 430,250");
-
+    var mpb = d3.select("#demand")
 
 
 	var msbF = chart.append("line")
@@ -137,6 +141,7 @@ function positive(){
 		.attr("x2", width)
 		.attr("y1", 100)
 		.attr("y2", 300)
+		.attr("opacity", 0)
 
 	//private linear demand
 	var mpb = chart.append("line")
@@ -163,9 +168,12 @@ function positive(){
 	var result2 = checkLineIntersection(supply, mpb)
 	console.log(result1)
 	if (result1.onLine1 && result1.onLine2){
+		var Q1 = d3.select("#Q2")
+		var P1 = d3.select("#P2")
 		var Q1 = chart.append("line")
-		 .style("stroke", "black")
+		 	.style("stroke", "black")
 		 	.style("stroke-width", 1)
+		 	.attr("id", "Q1")
 		 	//.style("stroke-dasharray", ("3,3"))
 		 	.attr("x1", result2.x)
 		 	.attr("x2", result2.x)
@@ -179,6 +187,7 @@ function positive(){
 		var P1 = chart.append("line")
 			.style("stroke", "black")
 			.style("stroke-width", 1)
+			.attr("id", "P1")
 			//.style("stroke-dasharray", ("3,3"))
 			.attr("x1", result2.x)
 			.attr("x2", result2.x)
@@ -192,6 +201,7 @@ function positive(){
 
 	if (result2.onLine1 && result2.onLine2){
 		var Q2 = chart.append("line")
+			.attr("id", "Q1")
 			.style("stroke", "black")
 			.style("stroke-width", 1)
 			.style("stroke-dasharray", ("3,3"))
@@ -211,7 +221,8 @@ function positive(){
 			.attr("y2", result2.y)
 			.attr("opacity",0)
 	}
-
+		var q1label = d3.select("#q2label")
+		var p1label = d3.select("#p2label")
 		var q1label = chart.append("text")
     		.attr({'class':'edgelabel',
                'id': "q1label",
@@ -234,9 +245,9 @@ function positive(){
     		.transition()
     			.delay(1000)
     		.text("P*")
-    	/*
+    	
 
-    		*/
+    		
 
 	var Q1trans = chart.append("line")
 			.attr("opactity", 0)
@@ -247,16 +258,16 @@ function positive(){
 
 	var result3 = checkLineIntersection(mpb, Q1trans)
 
-	// var dwl = getPoint(mpb, result2.x, height)
+	var dwl = getPoint(mpb, result2.x, height)
 
-	// var DWLlength = chart.append("line")
-	// 	.style("stroke", "black")
-	// 	.style("stroke-width", 1)
-	// 	.style("stroke-dasharray", ("3,3"))
-	// 	.attr("x1", result2.x)
-	// 	.attr("x2", result2.x)
-	// 	.attr("y1", height - dwl)
-	// 	.attr("y2", result2.y)
+	var DWLlength = chart.append("line")
+		.style("stroke", "black")
+		.style("stroke-width", 1)
+		.style("stroke-dasharray", ("3,3"))
+		.attr("x1", result2.x)
+		.attr("x2", result2.x)
+		.attr("y1", height - dwl)
+		.attr("y2", result2.y)
 
 	var dwlpath = "M " + result1.x + " " + result1.y 
 			+ " L " + result2.x + " " + result2.y +
@@ -279,11 +290,12 @@ function positive(){
 	var dwllabel =chart.append("text")
 		.html("Dead Weight Loss= " + dwlarea)
 		.style("fill", "purple")
-		.attr("dx", 90)
-		.attr("dy", 130)
+		.attr("dx", 180)
+		.attr("dy", 100)
 		.attr({"font-size": 12})
 
 	var DWL = chart.append("path")
+		.attr("id", "dwlpath")
 		.attr("d",dwlpath0)
         .style(".stroke-width", 2)
         .style("stroke", "none")
@@ -296,11 +308,90 @@ function positive(){
 
     var next = d3.select("#next")
     	.on("click", function(){
+    		if (!($(this).hasClass("unclick"))){
+    		$(".button").addClass("unclick")
+    			setTimeout(function(){
+    				$(".button").removeClass("unclick")
+    			}, 3000)
+
+    		if (stage == 0){
+    			setTimeout(function(){
+    				$("#prev").removeClass("unclick")
+    			}, 3000)
+    			stage0f()
+    		}
     		//add externality
-    		d3.select("#description")
+ 
+    		else if (stage == 1){
+    			setTimeout(function(){
+    				$("#next").addClass("unclick")
+    			}, 3000)
+    			stage1f()
+    		}
+    	}
+
+			// next.on("click", function() {
+			// 	//add subsity
+				
+			// 	var DWLline = chart.append("line")
+			// 		.style("stroke", "black")
+			// 		.style("stroke-width", 1)
+			// 		.style("stroke-dasharray", ("3,3"))
+			// 		.attr("x1", 0)
+			// 		.attr("x2", result2.x)
+			// 		.attr("y1", result2.y)
+			// 		.attr("y2", result2.y)
+			// 		.transition()
+			// 			.attr("x1", 0)
+			// 			.attr("x2", result1.x)
+			// 			.attr("y1", result1.y)
+			// 			.attr("y2", result1.y)	
+			// 			.duration(3000)
+
+				
+			// })
+
+    	})
+
+    var prev = d3.select("#prev")
+    	.on("click", function(){
+    		if (!($(this).hasClass("unclick"))){
+    		$(".button").addClass("unclick")
+    			setTimeout(function(){
+    				$(".button").removeClass("unclick")
+    			}, 3000)
+    		if (stage == 1){
+    			stage1b()
+    			setTimeout(function(){
+    				$("#prev").addClass("unclick")
+    			}, 3000)
+    			
+    			
+    		}
+    		else if (stage ==2){
+    			setTimeout(function(){
+    				$$("#next").removeClass("unclick")
+    			}, 3000)
+    			stage2b()
+    		}
+    	}
+    	})
+
+	function stage0f(){
+			stage += 1
+		   	d3.select("#description")
 				.html("Adding a Constant Positive Externality")
 
+			var changelabel =chart.append("text")
+				.attr({"id":"changelabel"})
+				.html("Increasing")
+				.style("fill", "purple")
+				.attr("dx", 230)
+				.attr("dy", 120)
+				.attr({"font-size": 10})
+
 			msbF
+				.attr("opacity", 1)
 				.transition()
 				 .attr("y1", 50)
 				 .attr("y2", 250)
@@ -308,33 +399,35 @@ function positive(){
 
 			var msbText = chart.append("text")
 		    	//.attr("x", 8)
-		    	.attr("dx", 385)
+		    	.attr("id", "msbText")
+		    	.attr("dx", 355)
 		    	.attr("dy", -5)
 		    	.style("font-size", 10)
 		    	.attr("fill","orange")
 		  		.append("textPath")
 		    		.attr("class", "textpath")
 		    		.attr("xlink:href", "#path1")
-		    		.text("Social Benefit");
+		    		.text("Marginal Social Benefit");
 
 			DWL
 				.transition()
-				.attr("d",dwlpath)
+				.attrTween("d",dwltween(dwlpath, 4, dwlarea))
 				.duration(3000)
-			Q1
-				.transition()
-				.attr("opacity",0)
 
 			P1
 				.transition()
 				.attr("opacity",0)
 
-		q1label
+			Q1
+				.transition()
+				.attr("opacity",0)
+
+		var q1label = d3.select("#q1label")
 			.transition()
 			.attr("dx", result1.x-5)
 			.duration(3000)
 
-		p1label
+		var p1label = d3.select("#p1label")
 			.transition()
 			.attr("dy", result1.y+5)
 			.duration(3000)
@@ -342,6 +435,7 @@ function positive(){
 
 		var Q12 = chart.append("line")
 		 .style("stroke", "black")
+		 	.attr("id", "Q12")
 		 	.style("stroke-width", 1)
 		 	//.style("stroke-dasharray", ("3,3"))
 		 	.attr("x1", result2.x)
@@ -357,6 +451,7 @@ function positive(){
 
 
 		var P12 = chart.append("line")
+			.attr("id", "P12")
 			.style("stroke", "black")
 			.style("stroke-width", 1)
 			//.style("stroke-dasharray", ("3,3"))
@@ -385,7 +480,7 @@ function positive(){
     	var p2label = chart.append("text")
     		.attr({'class':'edgelabel',
                'id': "p2label",
-               'dx': 0 - 18,
+               'dx': 0 - 20,
                'dy':result2.y + 5,
                'font-size':10,
                'fill':'black'})
@@ -400,76 +495,213 @@ function positive(){
 			P2
 				.transition()
 				.attr("opacity",1)
+	}
+
+	function stage1b(){
+		stage -= 1
+	   	d3.select("#description")
+			.html("Removing a Constant Positive Externality")
+		var changelabel = d3.select("#changelabel")
+			.html("Decreasing")
+			.transition()
+				.delay(3000)
+			.remove()
+		msbF
+			.transition()
+			 .attr("y1", 100)
+			 .attr("y2", 300)
+			 .duration(3000)
+		msbF
+			.transition()
+				.delay(3000)
+			.attr("opacity", 0)
+			
+		d3.select("#msbText")
+			.remove()
+		DWL
+			.transition()
+			.attrTween("d",dwltween(dwlpath0, 4, dwlarea))
+			.duration(3000)
+
+		var P1 =d3.select("#P1")
+			.transition()
+				.delay(2900)
+			.attr("opacity",1)
+
+		var Q1 = d3.select("#Q1")
+			.transition()
+				.delay(2900)
+			.attr("opacity",1)
+
+		var q1label = d3.select("#q1label")
+			.transition()
+				.attr("dx", result2.x-5)
+				.duration(3000)
+
+		var p1label = d3.select("#p1label")
+			.transition()
+				.attr("dy", result2.y+5)
+				.duration(3000)
+		var Q12 = d3.select("#Q12")
+			.transition()
+				.duration(3000)
+				.attr("x1", result2.x)
+				.attr("x2", result2.x)
+				.attr("y2", height)
+				.attr("y1", result2.y)
+			.remove()
+		var P12 = d3.select("#P12")
+			.transition()
+				.duration(3000)
+				.attr("y1", result2.y)
+				.attr("y2", result2.y)
+				.attr("x2", result2.x)
+			.remove()
+
+		d3.select("#p2label")
+			.transition()
+				.delay(2000)
+				.remove()
+		d3.select("#q2label")
+			.transition()
+				.delay(2000)
+				.remove()
+		Q2
+			.transition()
+				.delay(3000)
+			.attr("opacity", 0)
+		P2
+			.transition()
+				.delay(3000)
+			.attr("opacity", 0)
+
+	}
+	function stage1f(){
+		stage += 1
+		//var q2label = d3.select("#q2label")
+		//			.transition()
+		//			.attr("opacity",0)
+		d3.select("#q2label")
+			.transition()
+				.duration(3000)
+				.attr("dx", result1.x)
+		var p2label = d3.select("#p2label")
+			.transition()
+				.duration(3000)
+				.attr("dy", result1.y)
+		var p1label = d3.select("#p1label")
+			.transition()
+			.attr("opacity",0)
+		var q1label = d3.select("#q1label")
+			.transition()
+			.attr("opacity",0)
+		mpb
+			.transition()
+			.attr("y1", 50)
+			.attr("y2", 250)
+			.duration(3000)
+
+		mpbPath
+			.transition()
+			   	.attr("d", "M 0,64 L 430,264")
+			   	.duration(3000)
+
+		mpbText
+			.transition()
+			.attr("dx", 355)
+    		.attr("dy", 5)
+			//.style("opacity", 0)
+			.duration(3000)
+		DWL
+			.transition()
+			.attrTween("d",dwltween(dwlpath1, 4, dwlarea))
+			.duration(3000)
+		Q2
+			.transition()
+			.attr("x1", result1.x)
+			.attr("x2", result1.x)
+			.attr("y1",  result1.y)
+			.attr("y2", height)	
+			.duration(3000)
+		Q2
+			.transition()
+			.delay(3000)
+			.attr("opacity", 0)
+		P2
+			.transition()
+			.attr("x1", 0)
+			.attr("x2", result1.x)
+			.attr("y1", result1.y)
+			.attr("y2", result1.y)	
+			.duration(3000)
 
 
-			next.on("click", function() {
-				//add subsity
-				/*
-				var DWLline = chart.append("line")
-					.style("stroke", "black")
-					.style("stroke-width", 1)
-					.style("stroke-dasharray", ("3,3"))
-					.attr("x1", 0)
-					.attr("x2", result2.x)
-					.attr("y1", result2.y)
-					.attr("y2", result2.y)
-					.transition()
-						.attr("x1", 0)
-						.attr("x2", result1.x)
-						.attr("y1", result1.y)
-						.attr("y2", result1.y)	
-						.duration(3000)
-*/
-				q2label
-					.transition()
-					.attr("opacity",0)
-				p2label
-					.transition()
-					.attr("opacity",0)
-				mpb
-					.transition()
-					.attr("y1", 50)
-					.attr("y2", 250)
-					.duration(3000)
+		d3.select("#description")
+			.html("Adding a Constant Subsity on Production")
+		var changelabel = d3.select("#changelabel")
+			.html("Decreasing")
+	}
+	function stage2b(){
+		d3.select("#description")
+			.html("Removing a Constant Subsity on Production")
+		var changelabel = d3.select("#changelabel")
+			.html("Increasing")
+		stage -= 1
+		d3.select("#q2label")
+			.transition()
+				.duration(3000)
+				.attr("dx", result2.x -5)
+		var p2label = d3.select("#p2label")
+			.transition()
+				.duration(3000)
+				.attr("dy", result2.y +5)
+		var p1label = d3.select("#p1label")
+			.transition()
+				.delay(1000)
+			.attr("opacity",1)
+		var q1label = d3.select("#q1label")
+			.transition()
+				.delay(1000)
+			.attr("opacity",1)
 
-				mpbPath
-					.transition()
- 				   	.attr("d", "M 0,68 L 430,268")
- 				   	.duration(3000)
+		mpb
+			.transition()
+			.attr("y1", 100)
+			.attr("y2", 300)
+			.duration(3000)
 
-				mpbText
-					.transition()
-					.attr("dx", 385)
-		    		.attr("dy", 5)
-					//.style("opacity", 0)
-					.duration(3000)
-				DWL
-					.transition()
-					.attr("d",dwlpath1)
-					.duration(3000)
-				Q2
-					.transition()
-					.attr("x1", result1.x)
-					.attr("x2", result1.x)
-					.attr("y1",  result1.y)
-					.attr("y2", height)	
-					.duration(3000)
-				P2
-					.transition()
-					.attr("x1", 0)
-					.attr("x2", result1.x)
-					.attr("y1", result1.y)
-					.attr("y2", result1.y)	
-					.duration(3000)
+		mpbPath
+			.transition()
+			   	.attr("d", "M 0,100 L 430,300")
+			   	.duration(3000)
 
-
-    			d3.select("#description")
-    				.html("Adding a Constant Subsity on Production")
-			})
-
-    	})
-
-
+		mpbText
+			.transition()
+			.attr("dx", 360)
+    		.attr("dy", -5)
+			//.style("opacity", 0)
+			.duration(3000)
+		DWL
+			.transition()
+			.attrTween("d",dwltween(dwlpath, 4, dwlarea))
+			.duration(3000)
+		Q2
+			.transition()
+			.attr("x1", result2.x)
+			.attr("x2", result2.x)
+			.attr("y1",  result2.y)
+			.attr("y2", height)	
+			.duration(3000)
+		Q2
+			.attr("opacity", 1)
+		P2
+			.transition()
+			.attr("x1", 0)
+			.attr("x2", result2.x)
+			.attr("y1", result2.y)
+			.attr("y2", result2.y)	
+			.duration(3000)
+	}
 /*var sampleSVG = d3.select("#viz")
         .append("svg")
         .attr("width", 300)
@@ -486,6 +718,33 @@ function positive(){
         .on("mouseover", function(){d3.select(this).style("stroke", "steelblue");})
         .on("mouseout", function(){d3.select(this).style("stroke", "gray");});
 */
+		function dwltween(d1, precision, dwlarea){
+		return function() {
+		var path0 = this,
+			path1 = path0.cloneNode(),
+			n0 = path0.getTotalLength(),
+        	n1 = (path1.setAttribute("d", d1), path1).getTotalLength();
+		 // Uniform sampling of distance based on specified precision.
+    	var distances = [0], i = 0, dt = precision / Math.max(n0, n1);
+    	while ((i += dt) < 1) distances.push(i);
+    	distances.push(1);
+
+    	// Compute point-interpolators at each distance.
+    	var points = distances.map(function(t) {
+      	var p0 = path0.getPointAtLength(t * n0),
+        	p1 = path1.getPointAtLength(t * n1);
+     	return d3.interpolate([p0.x, p0.y], [p1.x, p1.y]);
+    });
+
+    	return function(t) {
+    		var w = document.getElementById("dwlpath").getBoundingClientRect().width
+			var h = document.getElementById("dwlpath").getBoundingClientRect().height
+			dwlarea = w*h/2
+			dwllabel.text("Dead Weight Loss = "+ String(dwlarea/1298 * 100).split(".")[0])
+      		return t < 1 ? "M" + points.map(function(p) { return p(t); }).join("L") : d1;
+    };
+	}}	
+
     }
 
 /*function getIntersecrtion(firstx1, firsty1, firstx2, firsty2, secondx1, secondy1, secondx2, secondy2){
@@ -567,37 +826,8 @@ function getPoint(line, xcoord, height){
     }
 }
 
-/*	function dwltween(d1, precision, dwlarea){
-		return function() {
-		var path0 = this,
-			path1 = path0.cloneNode(),
-			n0 = path0.getTotalLength(),
-        	n1 = (path1.setAttribute("d", d1), path1).getTotalLength();
-		 // Uniform sampling of distance based on specified precision.
-    	var distances = [0], i = 0, dt = precision / Math.max(n0, n1);
-    	while ((i += dt) < 1) distances.push(i);
-    	distances.push(1);
 
-    	// Compute point-interpolators at each distance.
-    	var points = distances.map(function(t) {
-      	var p0 = path0.getPointAtLength(t * n0),
-        	p1 = path1.getPointAtLength(t * n1);
-        	/*console.log(p0)
-        	console.log(p1)
-        	console.log(d3.interpolate([p0.x, p0.y], [p1.x, p1.y]))
-     	return d3.interpolate([p0.x, p0.y], [p1.x, p1.y]);
-    });
-
-    	return function(t) {
-    		var w = document.getElementById("dwlpath").getBoundingClientRect().width
-			var h = document.getElementById("dwlpath").getBoundingClientRect().height
-			dwlarea = w*h/2
-			dwllabel.text("Dead Weight Loss = "+ String(dwlarea/1298 * 100).split(".")[0])
-      		return t < 1 ? "M" + points.map(function(p) { return p(t); }).join("L") : d1;
-    };
-	}}	
-
-	*/
+	
 
 
 
