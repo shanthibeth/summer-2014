@@ -247,12 +247,12 @@ function positive(){
 	.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
 	.on("mouseout", function(){return tooltip.style("visibility", "hidden");});*/
 
-    var tip = d3.tip()
+/*    var tip = d3.tip()
   		.attr('class', 'd3-tip')
   		.offset([-10, 0])
   		.html(function() {
     			return "<strong>Explanation blah blah blah</strong>";
-  	 	})
+  	 	})*/
 
   		// svg.call(tip)
 
