@@ -24,6 +24,8 @@ function positive(){
 		.ticks(0)
 		.orient("left")
 
+
+
 /*	var exText = svg.append("text")
 		.attr("x", 300)
 		.attr("y", 200)
@@ -74,6 +76,9 @@ function positive(){
   	chart.append("g")
       	.attr("class", "y axis")
       	.call(yAxis);
+
+
+
 //private linear supply curve
 	//var supply = d3.select("#mpc")
 	var supply = chart.append("line")
@@ -197,6 +202,8 @@ function positive(){
 		 	.attr("x1",0)
 		 	.duration(1000)
 
+
+
 	}
 
 	if (result2.onLine1 && result2.onLine2){
@@ -221,6 +228,34 @@ function positive(){
 			.attr("y2", result2.y)
 			.attr("opacity",0)
 	}
+
+	
+/*	var sampleSVG = d3.select(".example_div")
+	.append("svg:svg")
+	.attr("class", "sample")
+	.attr("width", 300)
+	.attr("height", 300);    
+	
+	d3.select(".example_div svg")
+	.append("svg:circle")
+	.attr("stroke", "black")
+	.attr("fill", "aliceblue")
+	.attr("r", 50)
+	.attr("cx", 52)
+	.attr("cy", 52)
+	.on("mouseover", function(){return tooltip.style("visibility", "visible");})
+	.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+	.on("mouseout", function(){return tooltip.style("visibility", "hidden");});*/
+
+    var tip = d3.tip()
+  		.attr('class', 'd3-tip')
+  		.offset([-10, 0])
+  		.html(function() {
+    			return "<strong>Explanation blah blah blah</strong>";
+  	 	})
+
+  		// svg.call(tip)
+
 		var q1label = d3.select("#q2label")
 		var p1label = d3.select("#p2label")
 		var q1label = chart.append("text")
@@ -230,10 +265,35 @@ function positive(){
                'dy':height + 15,
                'font-size':10,
                'fill':'black'})
+
     		.transition()
     			.delay(1000)
     		.text("Q*")
+
+
+    	var q1explanation = chart.append("text")
+    		.style("visibility", "hidden")
+    		.attr("font-size", 10)
+    		.attr("width", 50)
+    		.attr("height", 100)
+    		//.attr("backgroundColor","black")
+    		.attr("dx", result2.x -15)
+    		.attr("dy", height-5)
+    		.text("explanation of the label blah blah blah blah blah blah blah blah")
+
+/*
+		var q1explanation = d3.select(".d3-tip")
+			//.append("d3-tip")
+			.style("position", "absolute")
+
+			.style("z-index", "10")
+			.style("visibility", "hidden")
+			.text("a simple tooltip");
+			*/
     		
+    	d3.select("#q1label")
+			.on("mouseover", function(){return q1explanation.style("visibility", "visible");})
+			.on("mouseout", function(){return q1explanation.style("visibility", "hidden");});
 
     	var p1label = chart.append("text")
     		.attr({'class':'edgelabel',
@@ -245,7 +305,28 @@ function positive(){
     		.transition()
     			.delay(1000)
     		.text("P*")
+    		//.on('mouseover', tip.show())
+    		//.on('mouseout', tip.hide())
+
     	
+
+
+  /*
+
+	svg.call(tip);
+
+	svg.selectAll("p1label")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.letter); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.frequency); })
+      .attr("height", function(d) { return height - y(d.frequency); })
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
+
+      */
 
     		
 
