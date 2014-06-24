@@ -167,6 +167,12 @@ function negative(){
 			.attr("y1",  result1.y)
 			.attr("y2",  result1.y)
 	}*/
+	var q2explanation = d3.tip()
+		.attr("class", "hoverbox")
+		.offset([-10, 0])
+		.html("explanation of the label blah<br> blah blah blah blah blah blah blah")
+
+	chart.call(q2explanation)
 
 		var result2 = checkLineIntersection(mpc, demand)
 		var result1
@@ -201,6 +207,8 @@ function negative(){
     		// .transition()
     		// 	.delay(1000)
     		.text("Q*")
+    		.on('mouseover', q2explanation.show)
+      		.on('mouseout', q2explanation.hide)
 
    /* var Q2 = d3.select("#q2path")
     var q2label = d3.select("#q2label")*/
@@ -242,7 +250,54 @@ function negative(){
     		// .transition()
     		// 	.delay(1000)
     		.text("P*")
+   //  	var q2explanationback = chart.append("rect")
+   //  		.attr("x", result2.x -15)
+   //  		.attr("y", height-25)
+   //  		.attr("width", 100)
+   //  		.attr("height", 30)
+   //  		.attr("fill", "black")
+   //  		.attr("opacity", .8)
+   //  		.style("visibility", "hidden")
+
+   //  	var q2explanation = chart.append("text")
+   //  		.attr("id", "q2explanation")
+   //  		//.attr("class", "hoverbox hidden")
+   //  		.style("visibility", "hidden")
+   //  		.attr("font-size", 10)
+   //  		.attr("width", 50)
+   //  		.attr("height", 100)
+   //  		//.attr("backgroundColor","black")
+   //  		.attr("dx", q2label.attr("dx") - 15)
+   //  		.attr("dy", height-5)
+   //  		//.attr("dx", 0)
+   //  		//.attr("dy", 0)
+   //  		.style("fill", "green")
+   //  		.text("explanation of the label blah blah blah blah blah blah blah blah")
+
+
+   //  	d3.select("#q2label")
+			// .on("mouseover", function(){ q2explanation.style("visibility", "visible") 
+			// 							q2explanationback.style("visibility", "visible");})
+			// .on("mouseout", function(){ q2explanation.style("visibility", "hidden") 
+			// 							q2explanationback.style("visibility", "hidden");});
+
+	// var q2explanation = chart.append("div")
+	// 	.attr("id", "q2explanation")
+	// 	.style({"width": 100 + "px", 
+	// 			"height": 30 + "px"})
+	// 	.attr("class", "hoverbox")
+	// 	//.attr("x", result2.x-15)
+	// 	//.attr("y", height- 25)
+	// 	//.style("visibility", "hidden")
+	// 	.html("explanation of the label blah<br> blah blah blah blah blah blah blah")
+	// }
+
+	// d3.select("#q2label")
+	// 	.on("mouseover", function(){ q2explanation.style("visibility", "visible")})
+	// 	.on("mouseout", function(){ q2explanation.style("visibility", "hidden")})
+
 	}
+
 	var dwlarea = 0
 	var dwllabel =chart.append("text")
 		.html("Dead Weight Loss= " + dwlarea)
@@ -1068,7 +1123,7 @@ function state1f(){
 		direction = "forward"
 	    state += 1
     	d3.select("#description")
-    		.html("By adding a tax that makes the price reflect the true cost to society (the marginal social cost, in the language of economics), governments can reduce this overconsumption, freeing up resources to be used in other sectors.")
+    		.html("By adding a tax that makes the price reflect the true cost to society (the marginal social cost, in the language of economics), governments can reduce this overconsumption, freeing up resources to be used in other sectors. <br> <b>Now click on the positive externality button to see another example</b>")
     	var changelabel = d3.select("#changelabel")
     		.text("Decreasing")
     	mpc.attr("T",0)
