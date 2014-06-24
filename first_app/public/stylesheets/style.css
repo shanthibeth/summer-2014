@@ -81,11 +81,32 @@ a {
 }
 .hoverbox{
 	  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
+	  width: 130px;
+	  text-align: center;
+  font-weight: normal;
+  font-size: .7em;
+  padding: 6px;
   background: rgba(0, 0, 0, 0.8);
-  color: red;
+  color: white;
   border-radius: 2px;
+  border-radius: 4px;
+}
+.hoverbox:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.6);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+.hoverbox.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+
 }
 .hidden{
 	display: none;
