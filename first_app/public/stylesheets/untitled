@@ -71,3 +71,14 @@
 	background-image: url(../images/play.png);
 	background-size: 100% 100%;
 }
+.hoverbox{
+	  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: red;
+  border-radius: 2px;
+}
+.hidden{
+	display: none;
+}

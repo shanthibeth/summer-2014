@@ -270,8 +270,18 @@ function positive(){
     			.delay(1000)
     		.text("Q*")
 
+    	var q1explanationback = chart.append("rect")
+    		.attr("x", result2.x -15)
+    		.attr("y", height-25)
+    		.attr("width", 100)
+    		.attr("height", 30)
+    		.attr("fill", "black")
+    		.attr("opacity", .8)
+    		.style("visibility", "hidden")
 
     	var q1explanation = chart.append("text")
+    		.attr("id", "q1explanation")
+    		//.attr("class", "hoverbox hidden")
     		.style("visibility", "hidden")
     		.attr("font-size", 10)
     		.attr("width", 50)
@@ -279,7 +289,10 @@ function positive(){
     		//.attr("backgroundColor","black")
     		.attr("dx", result2.x -15)
     		.attr("dy", height-5)
-    		.text("explanation of the label blah blah blah blah blah blah blah blah")
+    		//.attr("dx", 0)
+    		//.attr("dy", 0)
+    		.style("fill", "green")
+    		.html("explanation of the label<br> blah blah blah blah blah blah blah blah")
 
 /*
 		var q1explanation = d3.select(".d3-tip")
@@ -290,10 +303,15 @@ function positive(){
 			.style("visibility", "hidden")
 			.text("a simple tooltip");
 			*/
-    		
+    	/*$("#q1label").hover(function(){
+    		$("#q1explanation").removeClass("hidden")
+    	})
+*/
     	d3.select("#q1label")
-			.on("mouseover", function(){return q1explanation.style("visibility", "visible");})
-			.on("mouseout", function(){return q1explanation.style("visibility", "hidden");});
+			.on("mouseover", function(){ q1explanation.style("visibility", "visible") 
+										q1explanationback.style("visibility", "visible");})
+			.on("mouseout", function(){ q1explanation.style("visibility", "hidden") 
+										q1explanationback.style("visibility", "hidden");});
 
     	var p1label = chart.append("text")
     		.attr({'class':'edgelabel',
