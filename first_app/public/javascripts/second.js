@@ -170,7 +170,7 @@ function negative(){
 	var q2explanation = d3.tip()
 		.attr("class", "hoverbox")
 		.offset([-10, 0])
-		.html("explanation of the label blah<br> blah blah blah blah blah blah blah")
+		.html("This is the market-clearing quantity at which supply equals demand, without adjusting for the externality.The quantity is higher than what it would be if the external costs were included.")
 
 	chart.call(q2explanation)
 
@@ -240,6 +240,13 @@ function negative(){
     		// 		.ease("linear")
     		.attr("stroke-dashoffset", 0);
 
+    	var p2explanation = d3.tip()
+			.attr("class", "hoverbox")
+			.offset([100, 100])
+			.html("This is the market-clearing price at which supply equals demand, without adjusting for the externality. The price is lower than what it would be if the external costs were included.")
+
+		chart.call(p2explanation)
+
     	var p2label = chart.append("text")
     		.attr({'class':'edgelabel',
                'id': "p2label",
@@ -250,6 +257,8 @@ function negative(){
     		// .transition()
     		// 	.delay(1000)
     		.text("P*")
+    		.on('mouseover', p2explanation.show)
+      		.on('mouseout', p2explanation.hide)
    //  	var q2explanationback = chart.append("rect")
    //  		.attr("x", result2.x -15)
    //  		.attr("y", height-25)
