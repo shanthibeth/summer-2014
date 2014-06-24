@@ -62,3 +62,19 @@ a {
 #buttons{
 	padding-left: 420px;
 }
+.pause{
+	display: inline-block;
+	height: 25px;
+	width: 25px;
+	background-position: center bottom;
+	background-image: url(../images/pause.png);
+	background-size: 100% 100%;
+}
+.play{
+	display: inline-block;
+	height: 25px;
+	width: 25px;
+	background-position: center bottom;
+	background-image: url(../images/play.png);
+	background-size: 100% 100%;
+}

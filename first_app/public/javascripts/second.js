@@ -2,6 +2,7 @@
 
 function negative(){
 	var state = 0
+	var direction = ""
 	var margin = {top: 20, right: 30, bottom: 30, left: 40},
     	width = 500 - margin.left - margin.right,
    		height = 400 - margin.top - margin.bottom;
@@ -122,6 +123,7 @@ function negative(){
 
 //total linear demand curve
 	var demand = chart.append("line")
+		.attr("id", "demand")
 		.style("stroke", "red")
 		.style("stroke-width", 2)
 		.attr("x1", 0)
@@ -167,6 +169,7 @@ function negative(){
 	}*/
 
 		var result2 = checkLineIntersection(mpc, demand)
+		var result1
 	 	console.log(result2)
 	if (result2.onLine1 && result2.onLine2){
 
@@ -183,10 +186,10 @@ function negative(){
 		Q2
   			.attr("stroke-dasharray", totalLength + " " + totalLength)
   			.attr("stroke-dashoffset", totalLength)
-  				.transition()
-    				.duration(1000)
-    				.ease("linear")
-    				.attr("stroke-dashoffset", 0);
+  				// .transition()
+    		// 		.duration(1000)
+    		// 		.ease("linear")
+    		.attr("stroke-dashoffset", 0);
 
     	var q2label = chart.append("text")
     		.attr({'class':'edgelabel',
@@ -195,8 +198,8 @@ function negative(){
                'dy':height + 15,
                'font-size':10,
                'fill':'black'})
-    		.transition()
-    			.delay(1000)
+    		// .transition()
+    		// 	.delay(1000)
     		.text("Q*")
 
    /* var Q2 = d3.select("#q2path")
@@ -224,10 +227,10 @@ function negative(){
 		P2
   			.attr("stroke-dasharray", totalLength + " " + totalLength)
   			.attr("stroke-dashoffset", totalLength)
-  				.transition()
-    				.duration(1000)
-    				.ease("linear")
-    				.attr("stroke-dashoffset", 0);
+  				// .transition()
+    		// 		.duration(1000)
+    		// 		.ease("linear")
+    		.attr("stroke-dashoffset", 0);
 
     	var p2label = chart.append("text")
     		.attr({'class':'edgelabel',
@@ -236,11 +239,11 @@ function negative(){
                'dy':result2.y + 5,
                'font-size':10,
                'fill':'black'})
-    		.transition()
-    			.delay(1000)
+    		// .transition()
+    		// 	.delay(1000)
     		.text("P*")
 	}
-	dwlarea = 0
+	var dwlarea = 0
 	var dwllabel =chart.append("text")
 		.html("Dead Weight Loss= " + dwlarea)
 		.style("fill", "purple")
@@ -248,6 +251,21 @@ function negative(){
 		.attr("dy", 130)
 		.attr({"font-size": 12})
 
+	var timeout
+	var timeout2
+	var timeout3
+
+	$(".button").addClass("unclick")
+	$("#pause").removeClass("unclick")
+    timeout = setTimeout(function(){
+    				$(".button").removeClass("unclick")
+    				$("#pause").addClass("unclick")
+    			}, 3000)	
+	timeout2 = setTimeout(function(){
+	$("#prev").removeClass("unclick")
+    			}, 3000)
+	state0f()
+	
 
 //Start Animation Code
 
@@ -255,17 +273,19 @@ function negative(){
 		.on("click", function(){
 			if (!($(this).hasClass("unclick"))){
 			$(".button").addClass("unclick")
-    			setTimeout(function(){
+			$("#pause").removeClass("unclick")
+    			timeout = setTimeout(function(){
     				$(".button").removeClass("unclick")
+    				$("#pause").addClass("unclick")
     			}, 3000)
 			if (state == 0){
-				setTimeout(function(){
+				timeout2 = setTimeout(function(){
     				$("#prev").removeClass("unclick")
     			}, 3000)
 				state0f()
 			}
 			else if (state == 1){
-				setTimeout(function(){
+				timeout2 = setTimeout(function(){
     				$("#next").addClass("unclick")
     			}, 3000)
 				
@@ -276,25 +296,93 @@ function negative(){
 	var prev = d3.select("#prev")
 		.on("click", function(){
 			if (!($(this).hasClass("unclick"))){
+			$("#pause").removeClass("unclick")
 			$(".button").addClass("unclick")
-    			setTimeout(function(){
+    			timeout = setTimeout(function(){
     				$(".button").removeClass("unclick")
+    				$("#pause").addClass("unclick")
     			}, 3000)
 			if (state == 1){
-				setTimeout(function(){
+				timeout2 = setTimeout(function(){
     				$("#prev").addClass("unclick")
     			}, 3000)
 				
 				state1b()
 			}
 			if (state == 2){
-				setTimeout(function(){
+				timeout2 = setTimeout(function(){
     				$("#next").removeClass("unclick")
     			}, 3000)
 				
 				state2b()
 			}
 		}
+		})
+
+	var pause = d3.select("#pause")
+		.on("click", function(){
+			if (!($(this).hasClass("unclick"))){
+    		$(".button").addClass("unclick")
+    		if ($(this).hasClass("pause")){
+    			clearTimeout(timeout)
+    			clearTimeout(timeout2)
+    			clearTimeout(timeout3)
+    		}
+			if (state == 1 && direction == "forward"){
+				if ($(this).hasClass("pause")){
+					$(this).removeClass("pause")
+					$(this).addClass("play")
+					state0fpause()
+
+			}
+			else{
+				$(this).removeClass("play")
+				$(this).addClass("pause")
+				state0fplay()
+			}
+			}
+			else if (state == 0 && direction == "backward"){
+				if ($(this).hasClass("pause")){
+					$(this).removeClass("pause")
+					$(this).addClass("play")
+					state0bpause()
+
+			}
+			else{
+				$(this).removeClass("play")
+				$(this).addClass("pause")
+				console.log("working")
+				state0bplay()
+			}
+		}
+			else if( state == 2 && direction == "forward"){
+				if ($(this).hasClass("pause")){
+					$(this).removeClass("pause")
+					$(this).addClass("play")
+					state2fpause()
+
+			}
+			else{
+				$(this).removeClass("play")
+				$(this).addClass("pause")
+				console.log("working")
+				state2fplay()
+			}
+			}
+			else if (state ==1 && direction == "backward"){
+				if ($(this).hasClass("pause")){
+					$(this).removeClass("pause")
+					$(this).addClass("play")
+					state1bpause()
+
+			}
+			else{
+				$(this).removeClass("play")
+				$(this).addClass("pause")
+				console.log("working")
+				state1bplay()
+			}
+			}}
 		})
 		/*if (state == 0){
 			state0()}*/
@@ -536,6 +624,7 @@ function negative(){
     };
 	}}
 	function state0f(){
+		direction = "forward"
 		state +=1
 		d3.select("#description")
 			.html("In an unregulated free market economy, negative externalities, like pollution, may not be reflected in the costs an energy producer faces. At each level of production, there are additional costs that are not being borne by the producer. We call these the social costs, as opposed to the private costs, of supply, and they are represented graphically by the “higher” supply curve to the left. We can see that if these externalities were internalized, and consumers had to pay the full costs of energy, they would consume less and at a higher price. They are effectively overconsuming energy because they are not paying its true cost. We call this overpayment, and the resulting inefficient overallocation of scarce resources to energy, a “deadweight loss” to society, represented by the triangle.")
@@ -553,10 +642,10 @@ function negative(){
 	var mscpath = chart.append("path")
 		.attr("id", "spath")
 		.attr("d", spath)
-	var result1 = checkLineIntersection(msc, demand)
+	result1 = checkLineIntersection(msc, demand)
 	console.log(result1)
 
-	var dwl = getPoint(msc, result2.x, height)
+	dwl = getPoint(msc, result2.x, height)
 
 	var msclabel = chart.append("text")
 		.attr({'class':'edgelabel',
@@ -569,13 +658,13 @@ function negative(){
 			.text("Marginal Social Cost");
 	msc.attr("y1", 300)
 		.attr("y2", 100)
+		.attr("T",0)
 
 	msc.transition()
 		.duration(3000)
 		.attr("y1", 250)
 		.attr("y2", 50)
-
-
+		.attr("T", 1)
 
 	P2.transition()
 		.duration(3000)
@@ -696,13 +785,89 @@ function negative(){
     			.delay(1000)
     		.text("Pm")
 	}
-	function state1b(){
-		state -= 1
+	function state0fpause(){
 		var msc = d3.select("#msc")
+			.transition()
+			.duration(0)
+		var P2 = d3.select("#P2")
+			.transition()
+			.duration(0)
+		var Q2 = d3.select("#Q2")
+			.transition()
+			.duration(0)
+		var q2label = d3.select("#q2label")
+			.transition()
+			.duration(0)
+		var p2label = d3.select("#p2label")
+			.transition()
+			.duration(0)
+		var DWLlength = d3.select("#DWLlength")
+			.transition()
+			.duration(0)
+		var DWL = d3.select("#dwlpath")
+			.transition()
+			.duration(0)
+	}
+	function state0fplay(){
+		var msc = d3.select("#msc")
+
+		var time = msc.attr("T") * 3000
+		msc
+			.transition()
+				.duration(3000 - time)
+			.attr("y1", 250)
+			.attr("y2", 50)
+			.attr("T", 1)
+		P2.transition()
+			.duration(3000 - time)
+			.attr("d", "M "+ result1.x + " " + result1.y + " L 0"+ " "+ result1.y)
+		var Q2 = d3.select("#Q2")
+			.transition()
+			.duration(3000 - time)
+			.attr("x1", result1.x)
+			.attr("x2", result1.x)
+			.attr("y1", result1.y)
+		var q2label = d3.select("#q2label")
+			.transition()
+			.duration(3000 - time)
+			.attr("dx", result1.x -5)
+		var p2label = d3.select("#p2label")
+			.transition()
+			.duration(3000 - time)
+			.attr("dy", result1.y + 5)
+		var DWLlength = d3.select("#DWLlength")
+			.transition()
+			.duration(3000 - time)
+			.attr("y1", height - dwl)
+		var dwlpath1 = "M " + result2.x + " " + result2.y 
+			+ " L " + result1.x + " " + result1.y +
+			" L " + result2.x + " " + (height - dwl)
+			+ " L " + result2.x + " " + result2.y
+		var DWL = d3.select("#dwlpath")
+			.transition()
+        	.duration(3000 -time)
+        	.attrTween("d", dwltween(dwlpath1, 4, dwlarea))
+        timeout3 = setTimeout(function(){
+    				$(".button").removeClass("unclick")
+    				$("#pause").addClass("unclick")
+    			}, 3000- time)
+
+	}
+	function state1b(){
+		direction = "backward"
+		state -= 1
+		var demand = d3.select("#demand")
+			.attr("T", 0)
+			.transition()
+				.duration(3000)
+				.attr("T",1)
+		var msc = d3.select("#msc")
+			.attr("T", 0)
 			.transition()
 				.duration(3000)
 				.attr("y1", 300)
 				.attr("y2", 100)
+				.attr("T", 1)
 			.remove()
 		var msclabel = d3.select("#msclabel")
 			.remove()
@@ -719,9 +884,9 @@ function negative(){
 				.attr("y1", result2.y)
 			.remove()
 		var Q2 = chart.append("path")
+			.attr({"id": "q2path"})
 			.transition()
 				.delay(3000)
-			.attr({"id": "q2path"})
 			.attr("d", "M " + result2.x + " " + result2.y + " L " + result2.x + " " + height)
 			.style("stroke", "black")
 			.style("stroke-width", 1)
@@ -770,22 +935,156 @@ function negative(){
 				.delay(2000)
 			.remove()
 		d3.select("#description")
-    		.html("Removing a Constant Negative Externality")
+    		.html("In a world without externalities, the price that a producer pays would entirely reflect all the costs that their production process generates. Similarly, the price that a consumer would pay would entirely reflect all the benefits that the consumer receives.But energy production, like many other goods and services, involves externalities.")
 
 	}
+	function state0bpause(){
+		var demand = d3.select("#demand")
+			.transition()
+			.duration(0)
+		var msc = d3.select("#msc")
+			.transition()
+			.duration(0)
+		P2.transition()
+			.duration(0)
+		var Q2 = d3.select("#Q2")
+			.transition()
+			.duration(0)
+		var q2label = d3.select("#q2label")
+			.transition()
+			.duration(0)
+		var p2label = d3.select("#p2label")
+			.transition()
+			.duration(0)
+		var DWLlength = d3.select("#DWLlength")
+			.transition()
+			.duration(0)
+		var DWL = d3.select("#dwlpath")
+			.transition()
+			.duration(0)
+		var q2path= d3.select("#q2path")
+			.transition()
+			.duration(0)
+		var changelabel = d3.select("#changelabel")
+			.transition()
+			.duration(0)
+		var Q1 = d3.select("#Q1")
+			.transition()
+				.duration(0)
+		var P1 = d3.select("#P1")
+			.transition()
+				.duration(0)
+		var q1label = d3.select("#q1label")
+			.transition()
+				.duration(0)
+		var p1label = d3.select("#p1label")
+			.transition()
+				.duration(0)
+		}
+	
+	function state0bplay(){
+		var msc = d3.select("#msc")
+		var demand = d3.select("#demand")
+		var time = demand.attr("T") * 3000
+		demand 
+			.transition()
+				.duration(3000-time)
+				.attr("T",1)
+		msc
+			.transition()
+				.duration(3000 - time)
+			.attr("y1", 300)
+			.attr("y2", 100)
+			.attr("T", 1)
+			.remove()
+		P2.transition()
+			.duration(3000 - time)
+			.attr("d","M " + result2.x + " " + result2.y + " L " + 0 + " " + result2.y)
+		var Q2 = d3.select("#Q2")
+			.transition()
+			.duration(3000 - time)
+			.attr("x1", result2.x)
+			.attr("x2", result2.x)
+			.attr("y1", result2.y)
+			.remove()
+		var Q2 = chart.append("path")
+			.transition()
+				.delay(3000- time)
+			.attr("d", "M " + result2.x + " " + result2.y + " L " + result2.x + " " + height)
+			.style("stroke", "black")
+			.style("stroke-width", 1)
+		var q2label = d3.select("#q2label")
+			.transition()
+			.duration(3000 - time)
+			.attr("dx", result2.x -5)
+		var p2label = d3.select("#p2label")
+			.transition()
+			.duration(3000 - time)
+			.attr("dy", result2.y + 5)
+		var DWLlength = d3.select("#DWLlength")
+			.transition()
+			.duration(3000 - time)
+			.attr("y1", result2.y)
+			.remove()
+		var dwlpath0 = "M " + result2.x + " " + result2.y +
+			" L " + result2.x + " " + result2.y +
+			" L " + result2.x + " " + result2.y +
+			" L " + result2.x + " " + result2.y 
+		var DWL = d3.select("#dwlpath")
+			.transition()
+        	.duration(3000 -time)
+        	.attrTween("d", dwltween(dwlpath0, 4, dwlarea))
+        	.remove()
+        var changelabel = d3.select("#changelabel")
+			.transition()
+				.delay(3000 - time)
+			.remove()
+		if (2900 - time > 0){
+		var Q1 = d3.select("#Q1")
+			.transition()
+				.delay(2900 - time)
+			.remove()
+		var P1 = d3.select("#P1")
+			.transition()
+				.delay(2900 -time)
+			.remove()
+		}
+		if (2000 - time > 0){
+		var q1label = d3.select("#q1label")
+			.transition()
+				.delay(2000 - time)
+			.remove()
+		var p1label = d3.select("#p1label")
+			.transition()
+				.delay(2000 -time)
+			.remove()
+		}
+		timeout3 = setTimeout(function(){
+    				$("#next").removeClass("unclick")
+    				$("#pause").addClass("unclick")
+    			}, 3000- time)
+	}
 function state1f(){
+		direction = "forward"
 	    state += 1
     	d3.select("#description")
     		.html("By adding a tax that makes the price reflect the true cost to society (the marginal social cost, in the language of economics), governments can reduce this overconsumption, freeing up resources to be used in other sectors.")
     	var changelabel = d3.select("#changelabel")
     		.text("Decreasing")
-
+    	mpc.attr("T",0)
     	mpc.transition()
     		.duration(3000)
     		.attr("y1", 250)
     		.attr("y2", 50)
+    		.attr("T", 1)
+
     	var msc = d3.select("#msc")
+
     	var result1 = checkLineIntersection(msc, demand)
+    	msc
+    		.transition()
+    			.delay(2500)
+    		.attr("opacity", 0)
 
     	var dwlpath2 = "M " + result1.x + " " + result1.y +
 			" L " + result1.x + " " + result1.y +
@@ -836,18 +1135,120 @@ function state1f(){
     			.duration(3000)
     			.attrTween("xlink:href", function() { return function() { return "#path"; }; });
 }
+function state2fpause(){
+		mpc.transition()
+    		.duration(0)
+    	var msc = d3.select("#msc")
+  			.transition()
+  			.duration(0)
 
+    	d3.select("#dwlpath")
+    		.transition()
+    			.duration(0)
+    	var Q1 = d3.select("#Q1")
+    	Q1.transition()
+    		.duration(0)
+    	var P1 = d3.select("#P1")
+    	P1.transition()
+    		.duration(0)
+
+    	var q1label = d3.select("#q1label")
+    		.transition()
+    			.duration(0)
+    	d3.select("#p1label")
+    		.transition()
+    			.duration(0)
+
+    	d3.select("#path")
+    		.transition()
+    			.duration(0)
+
+    	d3.select("#mpclabel")
+    		.transition()
+    			.duration(0)
+
+
+}
+function state2fplay(){
+	var mpc = d3.select("#mpc")
+	var time = mpc.attr("T") * 3000
+	mpc.transition()
+    		.duration(3000 - time)
+    		.attr("y1", 250)
+    		.attr("y2", 50)
+    		.attr("T", 1)
+    	var msc = d3.select("#msc")
+    	var result1 = checkLineIntersection(msc, demand)
+    	if (2500 - time > 0){
+    		var result1 = checkLineIntersection(msc, demand)
+    	msc
+    		.transition()
+    			.delay(2500 - time)
+    		.attr("opacity", 0)
+    	}
+    	var dwlpath2 = "M " + result1.x + " " + result1.y +
+			" L " + result1.x + " " + result1.y +
+			" L " + result1.x + " " + result1.y +
+			" L " + result1.x + " " + result1.y 
+
+    	d3.select("#dwlpath")
+    		.transition()
+    			.duration(3000 -time)
+    			.attrTween("d", dwltween(dwlpath2, 4, dwlarea))
+    	var Q1 = d3.select("#Q1")
+    	Q1.transition()
+    		.duration(3000 - time)
+    		.attr("x1", result1.x)
+    		.attr("x2", result1.x)
+    		.attr("y1", result1.y)
+    	var P1 = d3.select("#P1")
+    	P1.transition()
+    		.duration(3000 - time)
+    		.attr("y1", result1.y)
+    		.attr("y2", result1.y)
+    		.attr("x2", result1.x)
+
+    	var q1label = d3.select("#q1label")
+    		.transition()
+    			.duration(3000- time)
+    			.attr("dx", result1.x)
+    	d3.select("#p1label")
+    		.transition()
+    			.duration(3000- time)
+    			.attr("dy", result1.y)
+
+    	var ppath2 = "M " + (width - 130) + " " + (height - getPoint(msc,width-130, height) +15)
+				+ " L " + (width-1) + " " + (height - getPoint(msc, width-1 , height) +15)
+		/*var ppath2 = "M 0 0 L 100 300"*/
+    	d3.select("#path")
+    		.transition()
+    			.duration(3000 -time)
+    			.attr("d", ppath2)
+
+    	d3.select("#mpclabel")
+    		.transition()
+    			.duration(3000 - time)
+    			.attrTween("xlink:href", function() { return function() { return "#path"; }; });
+    	timeout3 = setTimeout(function(){
+    				$("#prev").removeClass("unclick")
+    				$("#pause").addClass("unclick")
+    			}, 3000- time)
+}
 function state2b(){
+	direction = "backward"
 	state -= 1
 	d3.select("#description")
-    		.html("Removing a Constant Tax on Consumption")
+    		.html("In an unregulated free market economy, negative externalities, like pollution, may not be reflected in the costs an energy producer faces. At each level of production, there are additional costs that are not being borne by the producer. We call these the social costs, as opposed to the private costs, of supply, and they are represented graphically by the “higher” supply curve to the left. We can see that if these externalities were internalized, and consumers had to pay the full costs of energy, they would consume less and at a higher price. They are effectively overconsuming energy because they are not paying its true cost. We call this overpayment, and the resulting inefficient overallocation of scarce resources to energy, a “deadweight loss” to society, represented by the triangle.")
     var changelabel = d3.select("#changelabel")
     		.text("Increasing")
+    mpc.attr("T", 0)
     mpc.transition()
     	.duration(3000)
     	.attr("y1", 300)
     	.attr("y2", 100)
+    	.attr("T",1)
     var msc = d3.select("#msc")
+    	.attr("opacity", 1)
     var result1 = checkLineIntersection(msc, demand)
     var dwl = getPoint(msc, result2.x, height)
     var dwlpath1 = "M " + result2.x + " " + result2.y 
@@ -915,6 +1316,106 @@ function state2b(){
 			.duration(3000)
 			.attrTween("xlink:href", function() { return function() { return "#path"; }; });
 }
+	function state1bpause(){
+	mpc.transition()
+    	.duration(0)
+    d3.select("#dwlpath")
+    		.transition()
+    			.duration(0)
+    var Q1 = d3.select("#Q1")
+    Q1.transition()
+		.duration(0)
+    var P1 = d3.select("#P1")
+    P1.transition()
+		.duration(0)
+    var q1label = d3.select("#q1label")
+		.transition()
+			.duration(0)
+	d3.select("#p1label")
+		.transition()
+			.duration(0)
+	var q2label = d3.select("#q2label")
+		.transition()
+			.delay(0)
+
+	var p2label = d3.select("#p2label")
+		.transition()
+			.delay(0)
+		/*var ppath2 = "M 0 0 L 100 300"*/
+	d3.select("#path")
+		.transition()
+			.duration(0)
+
+	d3.select("#mpclabel")
+		.transition()
+			.duration(0)
+	}
+	function state1bplay(){
+	var time = mpc.attr("T") * 3000
+	mpc.transition()
+    	.duration(3000 - time)
+    	.attr("y1", 300)
+    	.attr("y2", 100)
+    var msc = d3.select("#msc")
+    var result1 = checkLineIntersection(msc, demand)
+    var dwl = getPoint(msc, result2.x, height)
+    var dwlpath1 = "M " + result2.x + " " + result2.y 
+			+ " L " + result1.x + " " + result1.y +
+			" L " + result2.x + " " + (height - dwl)
+			+ " L " + result2.x + " " + result2.y
+    d3.select("#dwlpath")
+    		.transition()
+    			.duration(3000 - time)
+    			.attrTween("d", dwltween(dwlpath1, 4, dwlarea))
+    var Q1 = d3.select("#Q1")
+    Q1.transition()
+		.duration(3000 - time)
+		.attr("x1", result2.x)
+		.attr("x2", result2.x)
+		.attr("y1", result2.y)
+    var P1 = d3.select("#P1")
+    P1.transition()
+		.duration(3000 - time)
+		.attr("y1", result2.y)
+		.attr("y2", result2.y)
+		.attr("x2", result2.x)
+    var q1label = d3.select("#q1label")
+		.transition()
+			.duration(3000 - time)
+			.attr("dx", result2.x -5)
+	d3.select("#p1label")
+		.transition()
+			.duration(3000 - time)
+			.attr("dy", result2.y+ 5)
+	if (1000 - time > 0){
+	var q2label = d3.select("q2label")
+		.transition()
+			.delay(1000 - time)
+		.text("Q*")
+
+	var p2label = d3.select("#p2label")
+		.transition()
+			.delay(1000 - time)
+		.text("P*")
+}
+	var ppath2 = "M " + (width - 130) + " " + (height - getPoint(mpc,width-130, height))
+				+ " L " + (width-1) + " " + (height - getPoint(mpc, width-1 , height))
+		/*var ppath2 = "M 0 0 L 100 300"*/
+	d3.select("#path")
+		.transition()
+			.duration(3000 - time)
+			.attrTween("d", function(){return function(){ return "M " + (width - 130) + " " + (height - getPoint(mpc,width-130, height) -4)
+				+ " L " + (width-1) + " " + (height - getPoint(mpc, width-1 , height) -4)}})
+
+	d3.select("#mpclabel")
+		.transition()
+			.duration(3000 - time)
+			.attrTween("xlink:href", function() { return function() { return "#path"; }; });
+	timeout3 = setTimeout(function(){
+    				$(".button").removeClass("unclick")
+    				$("#pause").addClass("unclick")
+    			}, 3000- time)
+	}
 	function dwltween(d1, precision, dwlarea){
 		return function() {
 		var path0 = this,
