@@ -385,18 +385,22 @@ function positive(){
         //.transition()
         //	.duration(3000)
         //	.attrTween("d", dwltween(dwlpath, 4, dwlarea))
-
+    var timeout
+    var timeout2
+    var timeout3
 
     var next = d3.select("#next")
     	.on("click", function(){
     		if (!($(this).hasClass("unclick"))){
     		$(".button").addClass("unclick")
-    			setTimeout(function(){
+    		$("#pause").removeClass("unclick")
+    			timeout = setTimeout(function(){
     				$(".button").removeClass("unclick")
+    				$("#pause").addClass("unclick")
     			}, 3000)
 
     		if (stage == 0){
-    			setTimeout(function(){
+    			timeout2 = setTimeout(function(){
     				$("#prev").removeClass("unclick")
     			}, 3000)
     			stage0f()
@@ -404,7 +408,7 @@ function positive(){
     		//add externality
  
     		else if (stage == 1){
-    			setTimeout(function(){
+    			timeout2 = setTimeout(function(){
     				$("#next").addClass("unclick")
     			}, 3000)
     			stage1f()
@@ -438,27 +442,95 @@ function positive(){
     	.on("click", function(){
     		if (!($(this).hasClass("unclick"))){
     		$(".button").addClass("unclick")
-    			setTimeout(function(){
+    		$("#pause").removeClass("unclick")
+    			timeout = setTimeout(function(){
     				$(".button").removeClass("unclick")
+    				$("#pause").addClass("unclick")
     			}, 3000)
     		if (stage == 1){
     			stage1b()
-    			setTimeout(function(){
+    			timeout2 = setTimeout(function(){
     				$("#prev").addClass("unclick")
     			}, 3000)
     			
     			
     		}
     		else if (stage ==2){
-    			setTimeout(function(){
-    				$$("#next").removeClass("unclick")
+    			timeout2 = setTimeout(function(){
+    				$("#next").removeClass("unclick")
     			}, 3000)
     			stage2b()
     		}
     	}
     	})
+    	var pause = d3.select("#pause")
+		.on("click", function(){
+			if (!($(this).hasClass("unclick"))){
+    		$(".button").addClass("unclick")
+    		if ($(this).hasClass("pause")){
+    			clearTimeout(timeout)
+    			clearTimeout(timeout2)
+    			clearTimeout(timeout3)
+    		}
+			if (stage == 1 && direction == "forward"){
+				if ($(this).hasClass("pause")){
+					$(this).removeClass("pause")
+					$(this).addClass("play")
+					stage0fpause()
+
+			}
+			else{
+				$(this).removeClass("play")
+				$(this).addClass("pause")
+				stage0fplay()
+			}
+			}
+			else if (stage == 0 && direction == "backward"){
+				if ($(this).hasClass("pause")){
+					$(this).removeClass("pause")
+					$(this).addClass("play")
+					stage0bpause()
+
+			}
+			else{
+				$(this).removeClass("play")
+				$(this).addClass("pause")
+				console.log("working")
+				stage0bplay()
+			}
+		}
+			else if( stage == 2 && direction == "forward"){
+				if ($(this).hasClass("pause")){
+					$(this).removeClass("pause")
+					$(this).addClass("play")
+					stage2fpause()
+
+			}
+			else{
+				$(this).removeClass("play")
+				$(this).addClass("pause")
+				console.log("working")
+				stage2fplay()
+			}
+			}
+			else if (stage ==1 && direction == "backward"){
+				if ($(this).hasClass("pause")){
+					$(this).removeClass("pause")
+					$(this).addClass("play")
+					stage1bpause()
+
+			}
+			else{
+				$(this).removeClass("play")
+				$(this).addClass("pause")
+				console.log("working")
+				stage1bplay()
+			}
+			}}
+		})
 
 	function stage0f(){
+			direction = "forward"
 			stage += 1
 		   	d3.select("#description")
 				.html("Here, the marginal social benefit is higher than the private benefit, and as a result, consumers underpurchase the good, again creating a deadweight loss to society represented by the triangle.")
@@ -472,10 +544,12 @@ function positive(){
 				.attr({"font-size": 10})
 
 			msbF
+				.attr("T", 0)
 				.attr("opacity", 1)
 				.transition()
 				 .attr("y1", 50)
 				 .attr("y2", 250)
+				 .attr("T", 1)
 				 .duration(3000)
 
 			var msbText = chart.append("text")
@@ -577,21 +651,119 @@ function positive(){
 				.transition()
 				.attr("opacity",1)
 	}
+	function stage0fpause(){
+		msbF
+			.transition()
+			.duration(0)
 
+		DWL
+			.transition()
+			.duration(0)
+
+		var q1label = d3.select("#q1label")
+			.transition()
+			.duration(0)
+
+		var p1label = d3.select("#p1label")
+			.transition()
+			.duration(0)
+
+
+		var Q12 = d3.select("#Q12")
+		 	.transition()
+				.duration(0)	
+
+
+		var P12 = d3.select("#P12")
+			.transition()
+				.duration(0)
+
+		var q2label = d3.select("#q2label")
+    		.transition()
+    			.delay(0)
+
+    	var p2label = d3.select("#p2label")
+    		.transition()
+    			.delay(0)
+
+	}
+	function stage0fplay(){
+		console.log("play")
+			var time = msbF.attr("T") *3000
+			msbF
+				.transition()
+				 .attr("y1", 50)
+				 .attr("y2", 250)
+				 .attr("T", 1)
+				 .duration(3000 - time)
+
+			DWL
+				.transition()
+				.attrTween("d",dwltween(dwlpath, 4, dwlarea))
+				.duration(3000 - time)
+
+		var q1label = d3.select("#q1label")
+			.transition()
+			.attr("dx", result1.x-5)
+			.duration(3000 - time)
+
+		var p1label = d3.select("#p1label")
+			.transition()
+			.attr("dy", result1.y+5)
+			.duration(3000 - time)
+
+
+		var Q12 = d3.select("#Q12")
+		 	.transition()
+				.attr("x1", result1.x)
+				.attr("x2", result1.x)
+				.attr("y1",  result1.y)
+				.attr("y2", height)
+				.duration(3000 - time)	
+
+
+		var P12 = d3.select("#P12")
+			.transition()
+				.attr("x1", 0)
+				.attr("x2", result1.x)
+				.attr("y1", result1.y)
+				.attr("y2", result1.y)	
+				.duration(3000 - time)
+
+		if (1000 - time > 0){
+		var q2label = d3.select("#q2label")
+    		.transition()
+    			.delay(1000 -time)
+    		.text("Qm")
+
+    	var p2label = d3.select("#p1label")
+    		.transition()
+    			.delay(1000 - time)
+    		.text("Pm")
+    	}
+    	timeout3 = setTimeout(function(){
+    				$(".button").removeClass("unclick")
+    				$("#pause").addClass("unclick")
+    			}, 3000 -time)
+
+	}
 	function stage1b(){
+		direction = "backward"
 		stage -= 1
 	   	d3.select("#description")
-			.html("Removing a Constant Positive Externality")
+			.html("Energy can also involve positive externalities. Some have argued that renewable place-based energy sources, like wind and solar, may generate positive externalities that consumer’s aren’t paying for, like reduced defense budgets because the government doesn’t need to engage in efforts to secure foreign fossil fuel supplies.")
 		var changelabel = d3.select("#changelabel")
 			.html("Decreasing")
 			.transition()
 				.delay(3000)
 			.remove()
 		msbF
+			.attr("T", 0)
 			.transition()
 			 .attr("y1", 100)
 			 .attr("y2", 300)
 			 .duration(3000)
+			 .attr("T", 1)
 		msbF
 			.transition()
 				.delay(3000)
@@ -657,7 +829,137 @@ function positive(){
 			.attr("opacity", 0)
 
 	}
+	function stage0bpause(){
+		var changelabel = d3.select("#changelabel")
+			.transition()
+				.duration(0)
+		msbF
+			.transition()
+			 .duration(0)
+		msbF
+			.transition()
+				.duration(0)
+		DWL
+			.transition()
+			.duration(0)
+
+		var P1 =d3.select("#P1")
+			.transition()
+				.delay(0)
+
+		var Q1 = d3.select("#Q1")
+			.transition()
+				.delay(0)
+
+		var q1label = d3.select("#q1label")
+			.transition()
+				.duration(0)
+
+		var p1label = d3.select("#p1label")
+			.transition()
+				.duration(0)
+		var Q12 = d3.select("#Q12")
+			.transition()
+				.duration(0)
+		var P12 = d3.select("#P12")
+			.transition()
+				.duration(0)
+
+		d3.select("#p2label")
+			.transition()
+				.duration(0)
+		d3.select("#q2label")
+			.transition()
+				.duration(0)
+		Q2
+			.transition()
+				.duration(0)
+		P2
+			.transition()
+				.duration(0)
+	}
+	function stage0bplay(){
+		var time = msbF.attr("T")* 3000
+		var changelabel = d3.select("#changelabel")
+			.transition()
+				.delay(3000- time)
+			.remove()
+		msbF
+			.transition()
+			 .attr("y1", 100)
+			 .attr("y2", 300)
+			 .duration(3000 - time)
+			 .attr("T", 1)
+		msbF
+			.transition()
+				.delay(3000- time)
+			.attr("opacity", 0)
+		DWL
+			.transition()
+			.attrTween("d",dwltween(dwlpath0, 4, dwlarea))
+			.duration(3000 - time)
+
+		if (2900 - time > 0){
+		var P1 =d3.select("#P1")
+			.transition()
+				.delay(2900 - time)
+			.attr("opacity",1)
+
+		var Q1 = d3.select("#Q1")
+			.transition()
+				.delay(2900 - time)
+			.attr("opacity",1)}
+
+		var q1label = d3.select("#q1label")
+			.transition()
+				.attr("dx", result2.x-5)
+				.duration(3000- time)
+
+		var p1label = d3.select("#p1label")
+			.transition()
+				.attr("dy", result2.y+5)
+				.duration(3000 - time)
+		var Q12 = d3.select("#Q12")
+			.transition()
+				.duration(3000 - time)
+				.attr("x1", result2.x)
+				.attr("x2", result2.x)
+				.attr("y2", height)
+				.attr("y1", result2.y)
+			.remove()
+		var P12 = d3.select("#P12")
+			.transition()
+				.duration(3000 - time)
+				.attr("y1", result2.y)
+				.attr("y2", result2.y)
+				.attr("x2", result2.x)
+			.remove()
+
+		if (2000 -time > 0){
+		d3.select("#p2label")
+			.transition()
+				.delay(2000- time)
+				.remove()
+		d3.select("#q2label")
+			.transition()
+				.delay(2000- time)
+				.remove()
+			}
+		Q2
+			.transition()
+				.delay(3000-time)
+			.attr("opacity", 0)
+		P2
+			.transition()
+				.delay(3000-time)
+			.attr("opacity", 0)
+		timeout3 = setTimeout(function(){
+    				$("#next").removeClass("unclick")
+    				$("#pause").addClass("unclick")
+    			}, 3000- time)
+	}
 	function stage1f(){
+		direction = "forward"
 		stage += 1
 		//var q2label = d3.select("#q2label")
 		//			.transition()
@@ -677,10 +979,12 @@ function positive(){
 			.transition()
 			.attr("opacity",0)
 		mpb
+			.attr("T",0)
 			.transition()
 			.attr("y1", 50)
 			.attr("y2", 250)
 			.duration(3000)
+			.attr("T", 1)
 
 		mpbPath
 			.transition()
@@ -722,9 +1026,98 @@ function positive(){
 		var changelabel = d3.select("#changelabel")
 			.html("Decreasing")
 	}
+	function stage2fpause(){
+		d3.select("#q2label")
+			.transition()
+				.duration(0)
+		var p2label = d3.select("#p2label")
+			.transition()
+				.duration(0)
+		mpb
+			.transition()
+			.duration(0)
+
+		mpbPath
+			.transition()
+			   	.duration(0)
+
+		mpbText
+			.transition()
+			.duration(0)
+		DWL
+			.transition()
+			.duration(0)
+		Q2
+			.transition()
+			.duration(0)
+		Q2
+			.transition()
+			.delay(0)
+		P2
+			.transition()	
+			.duration(0)
+
+	}
+	function stage2fplay(){
+		var time = mpb.attr("T")*3000
+		d3.select("#q2label")
+			.transition()
+				.duration(3000 - time)
+				.attr("dx", result1.x)
+		var p2label = d3.select("#p2label")
+			.transition()
+				.duration(3000-time)
+				.attr("dy", result1.y)
+		mpb
+			.transition()
+			.attr("y1", 50)
+			.attr("y2", 250)
+			.duration(3000 - time)
+			.attr("T", 1)
+
+		mpbPath
+			.transition()
+			   	.attr("d", "M 0,64 L 430,264")
+			   	.duration(3000 - time)
+
+		mpbText
+			.transition()
+			.attr("dx", 355)
+    		.attr("dy", 5)
+			//.style("opacity", 0)
+			.duration(3000 - time)
+		DWL
+			.transition()
+			.attrTween("d",dwltween(dwlpath1, 4, dwlarea))
+			.duration(3000 - time)
+		Q2
+			.transition()
+			.attr("x1", result1.x)
+			.attr("x2", result1.x)
+			.attr("y1",  result1.y)
+			.attr("y2", height)	
+			.duration(3000 - time)
+		Q2
+			.transition()
+			.delay(3000 - time)
+			.attr("opacity", 0)
+		P2
+			.transition()
+			.attr("x1", 0)
+			.attr("x2", result1.x)
+			.attr("y1", result1.y)
+			.attr("y2", result1.y)	
+			.duration(3000 - time)
+		timeout3 = setTimeout(function(){
+    				$("#prev").removeClass("unclick")
+    				$("#pause").addClass("unclick")
+    			}, 3000 -time)
+
+	}
 	function stage2b(){
+		direction = "backward"
 		d3.select("#description")
-			.html("Removing a Constant Subsity on Production")
+			.html("Here, the marginal social benefit is higher than the private benefit, and as a result, consumers underpurchase the good, again creating a deadweight loss to society represented by the triangle.")
 		var changelabel = d3.select("#changelabel")
 			.html("Increasing")
 		stage -= 1
@@ -746,9 +1139,11 @@ function positive(){
 			.attr("opacity",1)
 
 		mpb
+			.attr("T", 0)
 			.transition()
 			.attr("y1", 100)
 			.attr("y2", 300)
+			.attr("T",1)
 			.duration(3000)
 
 		mpbPath
@@ -782,6 +1177,103 @@ function positive(){
 			.attr("y1", result2.y)
 			.attr("y2", result2.y)	
 			.duration(3000)
+	}
+	function stage1bpause(){
+		d3.select("#q2label")
+			.transition()
+				.duration(0)
+		var p2label = d3.select("#p2label")
+			.transition()
+				.duration(0)
+		var p1label = d3.select("#p1label")
+			.transition()
+				.duration(0)
+		var q1label = d3.select("#q1label")
+			.transition()
+				.duration(0)
+		mpb
+			.transition()
+			.duration(0)
+
+		mpbPath
+			.transition()
+			   	.duration(0)
+
+		mpbText
+			.transition()
+			.duration(0)
+		DWL
+			.transition()
+			.duration(0)
+		Q2
+			.transition()
+			.duration(0)
+		P2
+			.transition()	
+			.duration(0)
+	}
+	function stage1bplay(){
+		var time = mpb.attr("T")*3000
+		d3.select("#q2label")
+			.transition()
+				.duration(3000 - time)
+				.attr("dx", result2.x -5)
+		var p2label = d3.select("#p2label")
+			.transition()
+				.duration(3000-time)
+				.attr("dy", result2.y +5)
+		
+		if (1000 -time > 0){
+		var p1label = d3.select("#p1label")
+			.transition()
+				.delay(1000-time)
+			.attr("opacity",1)
+		var q1label = d3.select("#q1label")
+			.transition()
+				.delay(1000-time)
+			.attr("opacity",1)
+}
+		mpb
+			.transition()
+			.attr("y1", 100)
+			.attr("y2", 300)
+			.attr("T",1)
+			.duration(3000-time)
+
+		mpbPath
+			.transition()
+			   	.attr("d", "M 0,100 L 430,300")
+			   	.duration(3000-time)
+
+		mpbText
+			.transition()
+			.attr("dx", 360)
+    		.attr("dy", -5)
+			//.style("opacity", 0)
+			.duration(3000-time)
+		DWL
+			.transition()
+			.attrTween("d",dwltween(dwlpath, 4, dwlarea))
+			.duration(3000-time)
+		Q2
+			.transition()
+			.attr("x1", result2.x)
+			.attr("x2", result2.x)
+			.attr("y1",  result2.y)
+			.attr("y2", height)	
+			.duration(3000-time)
+		P2
+			.transition()
+			.attr("x1", 0)
+			.attr("x2", result2.x)
+			.attr("y1", result2.y)
+			.attr("y2", result2.y)	
+			.duration(3000 -time)
+
+		timeout3 =setTimeout(function(){
+    				$(".button").removeClass("unclick")
+    				$("#pause").addClass("unclick")
+    			}, 3000-time)
 	}
 /*var sampleSVG = d3.select("#viz")
         .append("svg")
