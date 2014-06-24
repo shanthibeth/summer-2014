@@ -229,6 +229,8 @@ function positive(){
 			.attr("opacity",0)
 	}
 
+
+
 	
 /*	var sampleSVG = d3.select(".example_div")
 	.append("svg:svg")
@@ -271,13 +273,14 @@ function positive(){
     		.text("Q*")
 
     	var q1explanationback = chart.append("rect")
-    		.attr("x", result2.x -15)
+    		.attr("x", result2.x -50)
     		.attr("y", height-25)
     		.attr("width", 100)
     		.attr("height", 30)
     		.attr("fill", "black")
     		.attr("opacity", .8)
     		.style("visibility", "hidden")
+
 
     	var q1explanation = chart.append("text")
     		.attr("id", "q1explanation")
@@ -287,12 +290,22 @@ function positive(){
     		.attr("width", 50)
     		.attr("height", 100)
     		//.attr("backgroundColor","black")
-    		.attr("dx", result2.x -15)
+    		.attr("dx", result2.x -5)
     		.attr("dy", height-5)
     		//.attr("dx", 0)
     		//.attr("dy", 0)
-    		.style("fill", "green")
-    		.html("explanation of the label<br> blah blah blah blah blah blah blah blah")
+    		.style("fill", "white")
+    		.html("explanation of the label</br> blah blah blah blah blah blah blah blah")
+
+
+    		var plzwork = svg.append("g")
+    			.append("rect")
+    				.attr("height", 100)
+    				.attr("width",100)
+    				.attr("fill","black")
+    			.append("text")
+    				.text("This is the fdlkjgdflkjgldkfjgldfk")
+    				.attr("fill","white")
 
 /*
 		var q1explanation = d3.select(".d3-tip")
@@ -326,6 +339,35 @@ function positive(){
     		//.on('mouseover', tip.show())
     		//.on('mouseout', tip.hide())
 
+	    	var p1explanationback = chart.append("rect")
+	    		.attr("x", 0)
+	    		.attr("y", result2.y-15)
+	    		.attr("width", 100)
+	    		.attr("height", 30)
+	    		.attr("fill", "black")
+	    		.attr("opacity", .8)
+	    		.style("visibility", "hidden")
+
+	    	var p1explanation = chart.append("text")
+	    		.attr("id", "p1explanation")
+	    		//.attr("class", "hoverbox hidden")
+	    		.style("visibility", "hidden")
+	    		.attr("font-size", 10)
+	    		.attr("width", 50)
+	    		.attr("height", 100)
+	    		//.attr("backgroundColor","black")
+	    		.attr("dx", 0)
+	    		.attr("dy", result2.y-15)
+	    		//.attr("dx", 0)
+	    		//.attr("dy", 0)
+	    		.style("fill", "green")
+	    		.html("explanation of the label<br> blah blah blah blah blah blah blah blah")
+
+    	d3.select("#p1label")
+			.on("mouseover", function(){ p1explanation.style("visibility", "visible") 
+										p1explanationback.style("visibility", "visible");})
+			.on("mouseout", function(){ p1explanation.style("visibility", "hidden") 
+										p1explanationback.style("visibility", "hidden");});
     	
 
 
@@ -650,6 +692,36 @@ function positive(){
     			.delay(1000)
     		.text("Qm")
 
+/*    		var q2explanationback = chart.append("rect")
+	    		.attr("x", result2.x-50)
+	    		.attr("y", height-25)
+	    		.attr("width", 100)
+	    		.attr("height", 30)
+	    		.attr("fill", "black")
+	    		.attr("opacity", .8)
+	    		.style("visibility", "hidden")
+
+	    	var q2explanation = chart.append("text")
+	    		.attr("id", "q2explanation")
+	    		//.attr("class", "hoverbox hidden")
+	    		.style("visibility", "hidden")
+	    		.attr("font-size", 10)
+	    		.attr("width", 50)
+	    		.attr("height", 100)
+	    		//.attr("backgroundColor","black")
+	    		.attr("dx", result2.x-50)
+	    		.attr("dy", height-25)
+	    		//.attr("dx", 0)
+	    		//.attr("dy", 0)
+	    		.style("fill", "green")
+	    		.html("explanation of the label<br> blah blah blah blah blah blah blah blah")
+
+    	d3.select("#q2label")
+			.on("mouseover", function(){ q2explanation.style("visibility", "visible") 
+										q2explanationback.style("visibility", "visible");})
+			.on("mouseout", function(){ q2explanation.style("visibility", "hidden") 
+										q2explanationback.style("visibility", "hidden");});*/
+
     	var p2label = chart.append("text")
     		.attr({'class':'edgelabel',
                'id': "p2label",
@@ -660,6 +732,36 @@ function positive(){
     		.transition()
     			.delay(1000)
     		.text("Pm")
+
+    	var p2explanationback = chart.append("rect")
+	    		.attr("x", 0)
+	    		.attr("y", result2.y-15)
+	    		.attr("width", 100)
+	    		.attr("height", 30)
+	    		.attr("fill", "black")
+	    		.attr("opacity", .8)
+	    		.style("visibility", "hidden")
+
+	    	var p2explanation = chart.append("text")
+	    		.attr("id", "p2explanation")
+	    		//.attr("class", "hoverbox hidden")
+	    		.style("visibility", "hidden")
+	    		.attr("font-size", 10)
+	    		.attr("width", 50)
+	    		.attr("height", 100)
+	    		//.attr("backgroundColor","black")
+	    		.attr("dx", 0)
+	    		.attr("dy", result2.y-15)
+	    		//.attr("dx", 0)
+	    		//.attr("dy", 0)
+	    		.style("fill", "green")
+	    		.html("explanation of the label<br> blah blah blah blah blah blah blah blah")
+
+    	d3.select("#p2label")
+			.on("mouseover", function(){ p2explanation.style("visibility", "visible") 
+										p2explanationback.style("visibility", "visible");})
+			.on("mouseout", function(){ p2explanation.style("visibility", "hidden") 
+										p2explanationback.style("visibility", "hidden");});
 
 			Q2
 				.transition()
