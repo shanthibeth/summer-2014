@@ -6,7 +6,12 @@ a {
   color: #00b7ff;
 }
 #ebuttons{
-	text-align: center;
+	margin-left:30px;
+}
+#hoverinfo{
+	display: inline-block;
+	margin-right: 70px;
+	width:200px;
 }
 .ebutton{
 	color:white;
@@ -111,7 +116,6 @@ a {
   display: inline;
   font-size: 10px;
   height: 100%;
-  /*line-height: 1;*/
   color: rgba(0, 0, 0, 0.6);
   content: "\25C0";
   position: absolute;
