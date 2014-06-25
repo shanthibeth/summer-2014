@@ -5,6 +5,7 @@ body {
 a {
   color: #00b7ff;
 }
+
 #ebuttons{
 	text-align: center;
 }
@@ -105,6 +106,7 @@ a {
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
+
 }
 .right:before{
 	  box-sizing: border-box;
