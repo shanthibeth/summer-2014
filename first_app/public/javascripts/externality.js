@@ -1,6 +1,7 @@
 //externality.js
 
 $(document).ready(function(){
+	//Create preliminary simple supply/demand graph
 
 		var state = 0
 	var margin = {top: 20, right: 30, bottom: 30, left: 40},
@@ -54,7 +55,7 @@ $(document).ready(function(){
   	chart.append("g")
       	.attr("class", "y axis")
       	.call(yAxis);
-//private linear supply curve
+//Add  linear supply curve
 	var mpc = chart.append("line")
 		.attr({"id": "mpc"})
 		.style("stroke", "blue")
@@ -81,7 +82,7 @@ $(document).ready(function(){
 			.style("pointer-events", "none")
 			.text("Marginal Cost/Supply");
 
-//total linear demand curve
+//Add linear demand curve
 	var demand = chart.append("line")
 		.attr({"id": "demand"})
 		.style("stroke", "red")
@@ -186,8 +187,10 @@ $(document).ready(function(){
 	},function(){
 		$(this).removeClass("hover")
 	})
+
 	d3.select("#description")
 		.html("In a world without externalities, the price that a producer pays would entirely reflect all the costs that their production process generates. Similarly, the price that a consumer would pay would entirely reflect all the benefits that the consumer receives.But energy production, like many other goods and services, involves externalities. <b>Click on negative externality to begin.</b>")
+	//call negative externality function
 	$("#negativebutton").click(function (){
 	$(".button").addClass("unclick")
 	$("#pause").addClass("unclick")
@@ -197,6 +200,7 @@ $(document).ready(function(){
 	negative()
 	//$("#next").removeClass("unclick")
 })
+	//Call positive externality function
 	$("#positivebutton").click(function (){
 	$(".button").addClass("unclick")
 	$("#pause").addClass("unclick")
