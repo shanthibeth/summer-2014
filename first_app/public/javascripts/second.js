@@ -68,6 +68,7 @@ function negative(){
 //private linear supply curve
 
 	var mpc = chart.append("line")
+		.attr("id", "mpc")
 		.style("stroke", "blue")
 		.style("stroke-width", 2)
 		.attr("x1", 0)
@@ -81,11 +82,20 @@ function negative(){
 		.attr("id", "path")
 		.attr("d", ppath)
 
+	var mpcexplanation = d3.tip()
+		.attr("class", "hoverbox above")
+		.offset([20, 0])
+		.html("MPC: This line represents the private cost (what the producer pays) of producing one more unit, without including the cost of the externality.")
+
+	chart.call(mpcexplanation)
+
 	var mpclabel = chart.append("text")
 		.attr({'class':'edgelabel',
                'id': "mpclabel",
                'font-size':10,
                'fill':'blue'})
+		.on("mouseover", mpcexplanation.show)
+		.on("mouseout", mpcexplanation.hide)
 	  	.append("textPath")
 			.attr("xlink:href", "#path")
 			.style("pointer-events", "none")
@@ -168,9 +178,9 @@ function negative(){
 			.attr("y2",  result1.y)
 	}*/
 	var q2explanation = d3.tip()
-		.attr("class", "hoverbox")
+		.attr("class", "hoverbox above")
 		.offset([-10, 0])
-		.html("This is the market-clearing quantity at which supply equals demand, without adjusting for the externality.The quantity is higher than what it would be if the external costs were included.")
+		.html("Q*: This is the market-clearing quantity at which supply equals demand, without adjusting for the externality.The quantity is higher than what it would be if the external costs were included.")
 
 	chart.call(q2explanation)
 
@@ -241,9 +251,9 @@ function negative(){
     		.attr("stroke-dashoffset", 0);
 
     	var p2explanation = d3.tip()
-			.attr("class", "hoverbox")
-			.offset([100, 100])
-			.html("This is the market-clearing price at which supply equals demand, without adjusting for the externality. The price is lower than what it would be if the external costs were included.")
+			.attr("class", "hoverbox right")
+			.offset([48, 90])
+			.html("P*: This is the market-clearing price at which supply equals demand, without adjusting for the externality. The price is lower than what it would be if the external costs were included.")
 
 		chart.call(p2explanation)
 
@@ -306,6 +316,33 @@ function negative(){
 	// 	.on("mouseout", function(){ q2explanation.style("visibility", "hidden")})
 
 	}
+	var p1explanation = d3.tip()
+		.attr("class", "hoverbox right")
+		.offset([43, 90])
+		.html("Pm: This is the market-clearing price after the external social costs have been included, perhaps via a tax. It is higher than the unregulated market price.")
+
+	chart.call(p1explanation)
+
+	var q1explanation = d3.tip()
+		.attr("class", "hoverbox above")
+		.offset([-10, -3])
+		.html("Qm: This is the market-clearing quantity after the external social costs have been included, perhaps via a tax. It is lower than the unregulated market quantity sold.")
+
+	chart.call(q1explanation)
+
+	var dwlexplanation = d3.tip()
+		.attr("class", "hoverbox right")
+		.offset([72, 105])
+		.html("DWL: This represents the additional “wasted” resources allocated to this good because of an unadjusted externality. It is “wasted” in that it reflects total costs in excess of the benefit to consumers.")
+
+	chart.call(dwlexplanation)
+
+	var mscexplanation = d3.tip()
+		.attr("class", "hoverbox above")
+		.offset([20, 0])
+		.html("MSC: This line represents the social cost – that is, the private cost plus all other externally borne costs, of producing one more unit. It is higher than the private cost for all levels of production.")
+
+	chart.call(mscexplanation)
 
 	var dwlarea = 0
 	var dwllabel =chart.append("text")
@@ -716,10 +753,13 @@ function negative(){
                'id': "msclabel",
                'font-size':10,
                'fill':'orange'})
+		.on('mouseover', mscexplanation.show)
+      	.on('mouseout', mscexplanation.hide)
 	  	.append("textPath")
 			.attr("xlink:href", "#spath")
 			.style("pointer-events", "none")
 			.text("Marginal Social Cost");
+		
 	msc.attr("y1", 300)
 		.attr("y2", 100)
 		.attr("T",0)
@@ -802,9 +842,12 @@ function negative(){
         .style("stroke", "none")
         .style("fill", "purple")
         .style("opacity", ".5")
+        .on('mouseover', dwlexplanation.show)
+      	.on('mouseout', dwlexplanation.hide)
         .transition()
         	.duration(3000)
         	.attrTween("d", dwltween(dwlpath1, 4, dwlarea))
+        
 
     	var Q1 = chart.append("line")
     		.attr({"id": "Q1"})
@@ -833,9 +876,12 @@ function negative(){
                'dy':height + 15,
                'font-size':10,
                'fill':'black'})
+    		.on('mouseover', q1explanation.show)
+      		.on('mouseout', q1explanation.hide)
     		.transition()
     			.delay(1000)
     		.text("Qm")
+    		
     		
 
     	var p1label = chart.append("text")
@@ -845,9 +891,12 @@ function negative(){
                'dy':result2.y + 5,
                'font-size':10,
                'fill':'black'})
+    		.on('mouseover', p1explanation.show)
+      		.on('mouseout', p1explanation.hide)
     		.transition()
     			.delay(1000)
     		.text("Pm")
+    		
 	}
 	function state0fpause(){
 		var msc = d3.select("#msc")
@@ -1176,11 +1225,11 @@ function state1f(){
     	var q1label = d3.select("#q1label")
     		.transition()
     			.duration(3000)
-    			.attr("dx", result1.x)
+    			.attr("dx", result1.x -5)
     	d3.select("#p1label")
     		.transition()
     			.duration(3000)
-    			.attr("dy", result1.y)
+    			.attr("dy", result1.y + 5)
     	var q2label = d3.select("#q2label")
     		.remove()
     	var p2label = d3.select("#p2label")
@@ -1353,6 +1402,8 @@ function state2b(){
 		.transition()
 			.delay(1000)
 		.text("Q*")
+		.on('mouseover', q2explanation.show)
+      	.on('mouseout', q2explanation.hide)
 		
 
 	var p2label = chart.append("text")
@@ -1362,9 +1413,12 @@ function state2b(){
            'dy':result1.y + 5,
            'font-size':10,
            'fill':'black'})
+		.on('mouseover', p2explanation.show)
+      	.on('mouseout', p2explanation.hide)
 		.transition()
 			.delay(1000)
 		.text("P*")
+		
 
 	var ppath2 = "M " + (width - 130) + " " + (height - getPoint(mpc,width-130, height))
 				+ " L " + (width-1) + " " + (height - getPoint(mpc, width-1 , height))

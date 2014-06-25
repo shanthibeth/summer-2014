@@ -298,14 +298,14 @@ function positive(){
     		.html("explanation of the label</br> blah blah blah blah blah blah blah blah")
 
 
-    		var plzwork = svg.append("g")
+/*    		var plzwork = svg.append("g")
     			.append("rect")
     				.attr("height", 100)
     				.attr("width",100)
     				.attr("fill","black")
     			.append("text")
     				.text("This is the fdlkjgdflkjgldkfjgldfk")
-    				.attr("fill","white")
+    				.attr("fill","white")*/
 
 /*
 		var q1explanation = d3.select(".d3-tip")
