@@ -264,6 +264,56 @@ function positive(){
                'font-size':10,
                'fill':'black'})
     		.text("Q*")
+
+    	var q1explanationback = chart.append("rect")
+    		.attr("x", result2.x -50)
+    		.attr("y", height-25)
+    		.attr("width", 100)
+    		.attr("height", 30)
+    		.attr("fill", "black")
+    		.attr("opacity", .8)
+    		.style("visibility", "hidden")
+
+
+    	var q1explanation = chart.append("text")
+    		.attr("id", "q1explanation")
+    		//.attr("class", "hoverbox hidden")
+    		.style("visibility", "hidden")
+    		.attr("font-size", 10)
+    		.attr("width", 50)
+    		.attr("height", 100)
+    		//.attr("backgroundColor","black")
+    		.attr("dx", result2.x -5)
+    		.attr("dy", height-5)
+    		//.attr("dx", 0)
+    		//.attr("dy", 0)
+    		.style("fill", "white")
+    		.html("explanation of the label</br> blah blah blah blah blah blah blah blah")
+
+
+/*    		var plzwork = svg.append("g")
+    			.append("rect")
+    				.attr("height", 100)
+    				.attr("width",100)
+    				.attr("fill","black")
+    			.append("text")
+    				.text("This is the fdlkjgdflkjgldkfjgldfk")
+    				.attr("fill","white")*/
+
+/*
+		var q1explanation = d3.select(".d3-tip")
+			//.append("d3-tip")
+			.style("position", "absolute")
+
+			.style("z-index", "10")
+			.style("visibility", "hidden")
+			.text("a simple tooltip");
+			*/
+    	/*$("#q1label").hover(function(){
+    		$("#q1explanation").removeClass("hidden")
+    	})
+*/
+    	d3.select("#q1label")
     		.on('mouseover', q1explanation.show)
       		.on('mouseout', q1explanation.hide)
       		.transition()

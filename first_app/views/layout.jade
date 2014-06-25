@@ -2,19 +2,17 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
     script(src = "/javascripts/jquery-2.0.2.min.js")
     script(type="text/javascript", src="http://mbostock.github.com/d3/d3.js")
     script(type="text/javascript", src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js")
-    script(type = "text/javascript", src = "/javascripts/externality.js")
-    script(type = "text/javascript", src = "/javascripts/first.js")
-    script(type = "text/javascript", src = "/javascripts/second.js")
 body
     header
       nav
         ul
           li 
             a(href="/") Home
+          li
+            a(href = "/externality/") Externalities
     section#wrapper
         block content
             
