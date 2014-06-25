@@ -249,7 +249,6 @@ function positive(){
                'font-size':10,
                'fill':'black'})
     		.text("Q*")
-<<<<<<< HEAD
 
     	var q1explanationback = chart.append("rect")
     		.attr("x", result2.x -50)
