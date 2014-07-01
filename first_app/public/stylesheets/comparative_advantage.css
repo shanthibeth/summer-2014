@@ -5,3 +5,11 @@ body {
 a {
   color: #00b7ff;
 }
+
+.topproducers{
+	fill:steelblue;
+}
+
+.other{
+	fill:gray;
+}

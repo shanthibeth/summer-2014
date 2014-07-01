@@ -2,6 +2,13 @@ extends layout
 block content
   head
    link(rel='stylesheet', href='/stylesheets/comparative_advantage.css')
+   script(type = "text/javascript" ,src="http://d3js.org/topojson.v1.min.js")
+   script(type = "text/javascript", src="http://d3js.org/queue.v1.min.js")
+   script(type = "text/javascript", src="/javascripts/three.min.js")
+   script(type = "text/javascript", src="/javascripts/d3-threeD.js")
+   script(type = "text/javascript", src="/javascripts/tween.min.js")
+   script(type = "text/javascript", src = "/javascripts/comparative_advantage.js")
   body
     h1(id = "heading") Comparative Advantage
     p Who has the competitive edge and where?
+    div(id="container")
