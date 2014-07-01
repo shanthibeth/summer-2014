@@ -2,6 +2,14 @@ extends layout
 block content
   head
     link(rel='stylesheet', href='/stylesheets/resource_curse.css')
+    script(type = "text/javascript", src = "/javascripts/resourcecurse.js")
+
   body
     h1(id = "heading") Resource Curse
     p Where do different countries fall?
+    div(class = "chart")
+    div(id = "GDPbutton" class = "button") GDP
+    div(id = "edbutton" class = "button") Education
+    div(id = "anotherbutton" class = "button") Another
+    div(id = "energybutton" class = "button") Energy Production
+    div(id = "petroleumbutton" class = "button") Petroleum Exports

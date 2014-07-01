@@ -129,7 +129,7 @@ function positive(){
 	var mpbText = chart.append("text")
     	//.attr("x", 8)
 		.attr({'class':'edgelabel',
-               	'id': "msbText",
+               	'id': "mpbText",
     	        'font-size':10,
         		'fill':'red'})
     	.on('mouseover', MPBexplanation.show)
@@ -990,7 +990,7 @@ function positive(){
 
 		mpbPath
 			.transition()
-			   	.attr("d", "M 0,64 L 430,264")
+    			.attr("d", "M 320,212 L 430,263")
 			   	.duration(3000)
 
 
@@ -1081,7 +1081,7 @@ function positive(){
 
 		mpbPath
 			.transition()
-			   	.attr("d", "M 0,64 L 430,264")
+    			.attr("d", "M 320,212 L 430,263")
 			   	.duration(3000 - time)
 
 		mpbText
@@ -1152,7 +1152,7 @@ function positive(){
 
 		mpbPath
 			.transition()
-			   	.attr("d", "M 0,100 L 430,300")
+   				.attr("d", "M 320,244 L 430,295")
 			   	.duration(3000)
 
 		mpbText
@@ -1246,7 +1246,7 @@ function positive(){
 
 		mpbPath
 			.transition()
-			   	.attr("d", "M 0,100 L 430,300")
+    			.attr("d", "M 330,244 L 430,295")
 			   	.duration(3000-time)
 
 		mpbText
