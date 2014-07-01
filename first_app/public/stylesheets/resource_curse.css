@@ -5,3 +5,34 @@ body {
 a {
   color: #00b7ff;
 }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  stroke: #000;
+}
+
+.tooltip {
+  position: absolute;
+  width: 200px;
+  height: 28px;
+  pointer-events: none;
+}
+
+.button {
+	color:white;
+	margin: 5px;
+	margin-left: 20px;
+	padding:5px ;
+	height: 20px;
+	border-radius: 5px;
+	border: 6px;
+	border-color: black;
+	background-color: #000066;
+	display: inline-block;
+}
